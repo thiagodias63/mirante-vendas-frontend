@@ -1,0 +1,28 @@
+.format-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  padding: var(--space-sm);
+  color: #687b94;
+  background: #f5f8fc;
+  border-radius: var(--space-xs);
+  font-size: var(--space-sm);
+  line-height: 1.2;
+}
+.format-note i {
+  /* flex: 0 0 auto; */
+  margin-top: var(--space-xxs);
+  color: #4c83c6;
+}
+.format-note strong {
+  color: #405875;
+}
+.format-note p {
+  color: #405875;
+}
+.format-note__description {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+}

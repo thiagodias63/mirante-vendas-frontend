@@ -1,0 +1,33 @@
+<div class="upload-area" [class.is-loading]="loading">
+  <div class="upload-icon">
+    <i class="pi pi-file" aria-hidden="true"></i>
+  </div>
+  <h2>Arquivo de vendas</h2>
+  <p>Selecione um arquivo CSV com os dados de vendas.</p>
+  <p-fileUpload
+    mode="basic"
+    name="csv"
+    accept=".csv,text/csv"
+    chooseLabel="Selecionar arquivo"
+    chooseIcon="pi pi-folder-open"
+    [auto]="false"
+    [disabled]="loading || sending"
+    (onSelect)="onFileSelect($event)"
+  >
+  </p-fileUpload>
+  <div class="file-name" *ngIf="selectedFile">
+    <i class="pi pi-paperclip"></i>{{ selectedFile.name }}
+  </div>
+  <div class="file-hint" *ngIf="!selectedFile">Formato aceito: .csv</div>
+
+  <button
+    pButton
+    type="button"
+    class="submit-button"
+    label="Processar arquivo"
+    icon="pi pi-upload"
+    [disabled]="!selectedFile || loading || sending"
+    [loading]="loading"
+    (click)="submit()"
+  ></button>
+</div>

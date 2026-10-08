@@ -1,29 +1,20 @@
 import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
+import { appRoutes } from './app.routes';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppComponent } from './app.component';
-import { FileUploadModule } from 'primeng/fileupload';
-import { ButtonModule } from 'primeng/button';
-import { SkeletonModule } from 'primeng/skeleton';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FileUploadModule,
-    ButtonModule,
-    SkeletonModule,
-    SelectButtonModule,
-    FormsModule,
-    HttpClientModule
+    RouterModule.forRoot(appRoutes),
+    SharedModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

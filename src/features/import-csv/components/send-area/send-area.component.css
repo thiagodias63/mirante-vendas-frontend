@@ -1,0 +1,49 @@
+.send-area {
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid #e8edf4;
+}
+.send-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+.send-heading h2 {
+  margin: 0 0 var(--space-xxs);
+  font-size: 17px;
+  font-weight: 650;
+}
+.send-heading p {
+  margin: 0;
+  color: #718198;
+  font-size: 13px;
+}
+.send-heading > i {
+  color: #3478d4;
+  font-size: 22px;
+}
+.send-area label {
+  display: block;
+  margin-bottom: 7px;
+  color: #4d607a;
+  font-size: 13px;
+  font-weight: 600;
+}
+.strategy-select {
+  width: 100%;
+}
+.send-button {
+  margin-top: var(--space-sm);
+}
+
+.p-button-secondary {
+  background-color: transparent;
+  color: #3478d4;
+  border-color: #3478d4;
+}
+
+.send-area__buttons-wrapper {
+  display: flex;
+  gap: var(--space-md);
+}

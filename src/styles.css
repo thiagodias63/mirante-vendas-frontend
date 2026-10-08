@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --space-xxs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-xxl: 6rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  block-size: 100%;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  min-block-size: 100%;
+  padding-block-start: var(--space-xs);
+  padding-block-end: var(--space-xs);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 500;
+}
+
+small {
+  line-height: 1.5;
+}

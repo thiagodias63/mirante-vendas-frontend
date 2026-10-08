@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CsvVenda } from '../interfaces/csv-venda';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class VendaService {
   private readonly endpoint = `${environment.apiUrl}/vendas`;
 

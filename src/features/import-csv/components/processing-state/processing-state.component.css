@@ -1,0 +1,7 @@
+.processing-state {
+  display: grid;
+  gap: var(--space-sm);
+  margin: 22px var(--space-xxs) 0;
+  color: #667891;
+  font-size: 13px;
+}
