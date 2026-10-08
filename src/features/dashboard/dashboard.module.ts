@@ -1,25 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
+import { ChartModule } from 'primeng/chart';
 import { DialogModule } from 'primeng/dialog';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { SalesChartComponent } from './components/sales-chart/sales-chart.component';
+import { ProductDetailsDialogComponent } from './components/product-details-dialog/product-details-dialog.component';
+import { SalesTableComponent } from './components/sales-table/sales-table.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
-	declarations: [DashboardComponent],
+	declarations: [DashboardComponent, SalesTableComponent, SalesChartComponent, ProductDetailsDialogComponent],
 	imports: [
 		CommonModule,
-		FormsModule,
 		ButtonModule,
-		CalendarModule,
+		ChartModule,
 		DialogModule,
-		InputNumberModule,
-		InputTextModule,
 		TableModule,
 		RouterModule.forChild([{ path: '', component: DashboardComponent }]),
 	],

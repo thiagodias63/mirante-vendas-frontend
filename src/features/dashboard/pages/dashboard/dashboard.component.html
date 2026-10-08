@@ -1,97 +1,17 @@
 <main class="dashboard page-shell" aria-labelledby="dashboard-title">
 	<header class="dashboard__heading">
-		<div class="eyebrow"><i class="pi pi-chart-bar" aria-hidden="true"></i> MIRANTE VENDAS</div>
-		<h1 id="dashboard-title">Dashboard de vendas</h1>
-		<p>Acompanhe produtos e quantidades vendidas.</p>
-		<a routerLink="/importar-csv" class="dashboard__import-link">Importar vendas</a>
+		<div class="dashboard__eyebrow"><i class="pi pi-chart-bar" aria-hidden="true"></i> MIRANTE VENDAS</div>
+		<h1 id="dashboard-title" class="dashboard__title">Dashboard de vendas</h1>
+		<p class="dashboard__description">A tabela lista as vendas; o resumo agrupa as quantidades por produto nesta p&aacute;gina.</p>
 	</header>
-
-	<section class="filters" aria-label="Filtros de vendas">
-		<div class="filters__field">
-			<label for="product-filter">Produto</label>
-			<input id="product-filter" pInputText [(ngModel)]="productFilter" (keyup.enter)="applyFilters()" placeholder="Nome do produto" />
-		</div>
-		<div class="filters__field">
-			<label for="quantity-filter">Quantidade</label>
-			<p-inputNumber inputId="quantity-filter" [(ngModel)]="quantityFilter" [min]="0" [maxFractionDigits]="0" placeholder="Quantidade"></p-inputNumber>
-		</div>
-		<div class="filters__field">
-			<label for="date-filter">Data da venda</label>
-			<p-calendar inputId="date-filter" [(ngModel)]="dateFilter" dateFormat="yy-mm-dd" [showIcon]="true" placeholder="AAAA-MM-DD"></p-calendar>
-		</div>
-		<div class="filters__field">
-			<label for="order-filter">Ordenar por</label>
-			<select id="order-filter" [(ngModel)]="orderBy">
-				<option value="idVenda">ID da venda</option>
-				<option value="produto">Produto</option>
-				<option value="quantidade">Quantidade</option>
-				<option value="data_venda">Data da venda</option>
-			</select>
-		</div>
-		<div class="filters__field">
-			<label for="direction-filter">Direção</label>
-			<select id="direction-filter" [(ngModel)]="orderDirection">
-				<option value="asc">Crescente</option>
-				<option value="desc">Decrescente</option>
-			</select>
-		</div>
-		<div class="filters__actions">
-			<button pButton type="button" label="Filtrar" icon="pi pi-search" (click)="applyFilters()"></button>
-			<button pButton type="button" class="p-button-text" label="Limpar" (click)="clearFilters()"></button>
-		</div>
-	</section>
 
 	<p *ngIf="errorMessage" class="dashboard__error" role="alert">{{ errorMessage }}</p>
 
-	<section class="table-card" aria-label="Vendas agrupadas por produto">
-		<p-table [value]="products" [lazy]="true" [paginator]="true" [first]="tableFirst" [rows]="size"
-			[rowsPerPageOptions]="pageSizeOptions" [totalRecords]="totalItems" [loading]="loading"
-			(onLazyLoad)="loadSales($event)" responsiveLayout="scroll">
-			<ng-template pTemplate="header">
-				<tr>
-					<th>Produto</th>
-					<th>Quantidade vendida</th>
-					<th>Ocorr&ecirc;ncias</th>
-					<th>Valor total</th>
-					<th>A&ccedil;&otilde;es</th>
-				</tr>
-			</ng-template>
-			<ng-template pTemplate="body" let-product>
-				<tr>
-					<td>{{ product.produto }}</td>
-					<td>{{ product.quantidade }}</td>
-					<td>{{ product.ocorrencias }}</td>
-					<td>{{ product.valorTotal | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
-					<td><button pButton type="button" class="p-button-text" icon="pi pi-eye" label="Detalhes" (click)="showDetails(product.produto)"></button></td>
-				</tr>
-			</ng-template>
-			<ng-template pTemplate="emptymessage">
-				<tr><td colspan="5">Nenhuma venda encontrada.</td></tr>
-			</ng-template>
-		</p-table>
-	</section>
+	<app-sales-table [sales]="sales" [totalItems]="totalItems" [size]="size" [first]="tableFirst"
+		[loading]="loading" [pageSizeOptions]="pageSizeOptions" (lazyLoad)="loadSales($event)"
+		(productSelected)="showDetails($event)"></app-sales-table>
 
-	<section class="chart-card" aria-labelledby="chart-title">
-		<h2 id="chart-title">Quantidade vendida por produto</h2>
-		<p *ngIf="!products.length && !loading">Sem dados para exibir.</p>
-		<div *ngIf="products.length" class="bar-chart" role="img" aria-label="Gr&aacute;fico de barras com produto no eixo X e quantidade no eixo Y">
-			<div *ngFor="let product of products" class="bar-chart__column">
-				<strong class="bar-chart__value">{{ product.quantidade }}</strong>
-				<div class="bar-chart__track"><div class="bar-chart__bar" [style.height]="barHeight(product.quantidade)"></div></div>
-				<span class="bar-chart__label" [title]="product.produto">{{ product.produto }}</span>
-			</div>
-		</div>
-	</section>
+	<app-sales-chart [sales]="sales"></app-sales-chart>
 </main>
 
-<p-dialog [(visible)]="detailsVisible" [header]="'Vendas de ' + selectedProduct" [modal]="true" [style]="{ width: 'min(56rem, 95vw)' }" [maximizable]="true">
-	<p *ngIf="detailsLoading">Carregando ocorr&ecirc;ncias...</p>
-	<p *ngIf="detailsError" class="dashboard__error" role="alert">{{ detailsError }}</p>
-	<p-table *ngIf="!detailsLoading && !detailsError" [value]="details" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" responsiveLayout="scroll">
-		<ng-template pTemplate="header"><tr><th>ID da venda</th><th>Produto</th><th>Quantidade</th><th>Pre&ccedil;o unit&aacute;rio</th><th>Data da venda</th></tr></ng-template>
-		<ng-template pTemplate="body" let-sale>
-			<tr><td>{{ sale.idVenda }}</td><td>{{ sale.produto }}</td><td>{{ sale.quantidade }}</td><td>{{ sale.precoUnitario | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td><td>{{ sale.dataVenda | date:'dd/MM/yyyy HH:mm' }}</td></tr>
-		</ng-template>
-		<ng-template pTemplate="emptymessage"><tr><td colspan="5">Nenhuma ocorr&ecirc;ncia encontrada.</td></tr></ng-template>
-	</p-table>
-</p-dialog>
+<app-product-details-dialog [(visible)]="detailsVisible" [product]="selectedProduct"></app-product-details-dialog>

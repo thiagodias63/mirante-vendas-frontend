@@ -13,9 +13,26 @@ describe('VendasService', () => {
 		http = TestBed.inject(HttpTestingController);
 	});
 
+	it('should gets one sale by its id', () => {
+		const sale = {
+			idVenda: 42,
+			produto: 'Camiseta',
+			quantidade: 2,
+			precoUnitario: 25,
+			dataVenda: '2026-10-08T10:00:00Z',
+		};
+		let result: unknown;
+		service.getOne(42).subscribe((response) => (result = response));
+
+		const request = http.expectOne(`${environment.apiUrl}/vendas/42`);
+		expect(request.request.method).toBe('GET');
+		request.flush(sale);
+		expect(result).toEqual(sale);
+	});
+
 	afterEach(() => http.verify());
 
-	it('posts a sale to the vendas endpoint', () => {
+	it('should posts a sale to the vendas endpoint', () => {
 		const sale = {
 			id_venda: 3,
 			produto: 'Tênis',
@@ -33,7 +50,7 @@ describe('VendasService', () => {
 		expect(result).toEqual({ id: 3 });
 	});
 
-	it('gets a page and sends pagination, sorting, and optional filters', () => {
+	it('should gets a page and sends pagination, sorting, and optional filters', () => {
 		const page = { data: [], page: 0, size: 25, totalItems: 0 };
 		let result: unknown;
 		service
@@ -60,7 +77,7 @@ describe('VendasService', () => {
 		expect(result).toEqual(page);
 	});
 
-	it('omits filters that are not set', () => {
+	it('should omits filters that are not set', () => {
 		service.getAll({ size: 10, page: 1, orderBy: 'idVenda', orderDirection: 'asc' }).subscribe();
 		const request = http.expectOne((candidate) => candidate.url === `${environment.apiUrl}/vendas`);
 		expect(request.request.params.get('_size')).toBe('10');

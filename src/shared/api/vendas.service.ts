@@ -46,6 +46,10 @@ export class VendasService {
 		return this.http.post<unknown>(this.endpoint, venda);
 	}
 
+	getOne(idVenda: number): Observable<Venda> {
+		return this.http.get<Venda>(`${this.endpoint}/${idVenda}`);
+	}
+
 	getAll(filters: GetAllVendasParams): Observable<VendaPage> {
 		let params = new HttpParams()
 			.set('_size', filters.size)
@@ -53,7 +57,7 @@ export class VendasService {
 			.set('_order', `${filters.orderBy},${filters.orderDirection}`);
 
 		if (filters.Produto) params = params.set('Produto', filters.Produto);
-		if (filters.Quantidade !== undefined) params = params.set('Quantidade', filters.Quantidade);
+		if (filters.Quantidade) params = params.set('Quantidade', filters.Quantidade);
 		if (filters.DataVenda) params = params.set('DataVenda', filters.DataVenda);
 
 		return this.http.get<VendaPage>(this.endpoint, { params });

@@ -1,0 +1,6 @@
+<section class="sales-chart" aria-labelledby="sales-chart__title">
+	<h2 id="sales-chart__title" class="sales-chart__title">Quantidade vendida por produto</h2>
+	<p *ngIf="!products.length" class="sales-chart__empty">Sem dados para exibir.</p>
+	<p-chart *ngIf="products.length" class="sales-chart__plot" type="bar" [data]="chartData" [options]="chartOptions"
+		aria-label="Gr&aacute;fico de barras com produto no eixo X e quantidade no eixo Y"></p-chart>
+</section>
