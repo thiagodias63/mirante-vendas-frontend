@@ -1,6 +1,8 @@
-<div class="processing-state" *ngIf="loading || sending" aria-live="polite">
-  <p-skeleton width="12rem" height="1rem"></p-skeleton>
-  <p-skeleton width="100%" height="0.65rem"></p-skeleton>
+<div *ngIf="loading || sending" class="processing-state" aria-live="polite">
+  <p-progressBar
+    mode="indeterminate"
+    [style]="{ height: '3.125rem' }"
+  ></p-progressBar>
   <span>{{
     sending
       ? "Enviando vendas ao backend…"

@@ -50,7 +50,6 @@ export class UploadAreaComponent {
       return;
     }
 
-    const startedAt = Date.now();
     this.loadingChange.emit(true);
     this.toastService.dismissToast();
     let errorMessage: string | null = null;
@@ -58,18 +57,18 @@ export class UploadAreaComponent {
       this.processedSales = await this.processCsvService.process(
         this.selectedFile
       );
-      this.processedSalesChange.emit(this.processedSales);
+
+      setTimeout(() => {
+        this.loadingChange.emit(false);
+        this.processedSalesChange.emit(this.processedSales);
+      }, 5_000);
     } catch (error) {
       errorMessage =
         error instanceof Error
           ? error.message
           : 'Não foi possível processar o arquivo CSV.';
+      this.loadingChange.emit(false);
     }
-
-    // const remaining = 5000 - (Date.now() - startedAt);
-    // if (remaining > 0)
-    //   await new Promise((resolve) => setTimeout(resolve, remaining));
-    this.loadingChange.emit(false);
 
     if (errorMessage) {
       this.toastService.showToast(

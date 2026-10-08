@@ -19,7 +19,7 @@ import { ProcessingStateComponent } from './components/processing-state/processi
 import { SendAreaComponent } from './components/send-area/send-area.component';
 import { FormatNoteComponent } from './components/format-note/format-note.component';
 import { SharedModule } from 'primeng/api';
-
+import { ProgressBarModule } from 'primeng/progressbar';
 @NgModule({
   declarations: [
     ImportCsvComponent,
@@ -40,6 +40,7 @@ import { SharedModule } from 'primeng/api';
     FileUploadModule,
     ButtonModule,
     SkeletonModule,
+    ProgressBarModule,
     SelectButtonModule,
     FormsModule,
     HttpClientModule,

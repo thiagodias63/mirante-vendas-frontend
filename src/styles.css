@@ -7,8 +7,36 @@
   --space-lg: 2rem;
   --space-xl: 3rem;
   --space-xxl: 6rem;
+
+  --hue: 218;
+  --saturation: 90%;
+  --lightness: 50%;
+
+  --brand: hsl(var(--hue) calc(var(--saturation) / 2) var(--lightness));
+
+  --text1: hsl(var(--hue) 15% 85%);
+  --text2: hsl(var(--hue) 15% 65%);
+
+  --surface1: hsl(var(--hue) 10% 10%);
+  --surface2: hsl(var(--hue) 10% 15%);
+  --surface3: hsl(var(--hue) 5% 20%);
+  --surface4: hsl(var(--hue) 5% 25%);
 }
 
+@media (prefers-color-scheme: light) {
+  :root {
+    --brand: hsl(var(--hue) var(--saturation) var(--lightness));
+
+    --text1: hsl(var(--hue) var(--saturation) 10%);
+
+    --text2: hsl(var(--hue) calc(var(--saturation) / 2) 30%);
+
+    --surface1: hsl(var(--hue) 20% 90%);
+    --surface2: hsl(var(--hue) 10% 99%);
+    --surface3: hsl(var(--hue) 10% 96%);
+    --surface4: hsl(var(--hue) 10% 85%);
+  }
+}
 * {
   box-sizing: border-box;
   margin: 0;
@@ -21,8 +49,8 @@ html {
 body {
   font-family: system-ui, sans-serif;
   min-block-size: 100%;
-  padding-block-start: var(--space-xs);
-  padding-block-end: var(--space-xs);
+  /* padding-block-start: var(--space-xs);
+  padding-block-end: var(--space-xs); */
 }
 
 h1,

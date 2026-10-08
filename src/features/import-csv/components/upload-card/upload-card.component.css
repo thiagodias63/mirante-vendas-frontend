@@ -2,19 +2,22 @@
   max-width: 700px;
   margin: 0 auto;
   padding: var(--space-lg) var(--space-xl);
-  background: #fff;
-  border: 1px solid #e6ebf2;
+  background: var(--surface2);
+  border: 1px solid var(--surface4);
   border-radius: var(--space-sm);
-  box-shadow: 0 var(--space-sm) var(--space-xl) rgba(31, 55, 84, 0.08);
+  box-shadow: 0 var(--space-sm) var(--space-xl) var(--surface2);
 }
-h1 {
-  color: #152b49;
-  font-size: var(--space-lg);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+.upload-card__title {
+  color: var(--text1);
+  font-size: 2rem;
 }
-.intro {
+.upload-card__subtitle {
   margin: 0;
-  color: #667891;
-  font-size: 15px;
+  color: var(--text2);
+  font-size: 1rem;
+}
+@media (max-width: 600px) {
+  .upload-card {
+    padding: var(--space-sm) var(--space-md);
+  }
 }

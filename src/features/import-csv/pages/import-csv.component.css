@@ -1,25 +1,17 @@
 :host {
   display: block;
   min-height: 100vh;
-  color: #172b4d;
+  background: var(--surface1);
+  color: var(--text1);
 }
 .import-csv {
   min-height: 100vh;
   padding: var(--space-xxl) var(--space-md);
-  background: #f4f7fb;
+  background: var(--surface1);
 }
 
 @media (max-width: 600px) {
   .import-csv {
-    padding: 28px 14px;
-  }
-  .upload-card {
-    padding: 28px var(--space-md);
-  }
-  .upload-area {
-    padding: 26px 18px;
-  }
-  h1 {
-    font-size: 27px;
+    padding: var(--space-lg) var(--space-sm);
   }
 }

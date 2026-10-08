@@ -4,22 +4,18 @@
   gap: var(--space-sm);
   margin-top: var(--space-md);
   padding: var(--space-sm);
-  color: #687b94;
-  background: #f5f8fc;
+  color: var(--text2);
+  background: var(--surface1);
   border-radius: var(--space-xs);
-  font-size: var(--space-sm);
+  font-size: 1rem;
   line-height: 1.2;
 }
-.format-note i {
-  /* flex: 0 0 auto; */
+.format-note__icon {
   margin-top: var(--space-xxs);
-  color: #4c83c6;
+  color: var(--brand);
 }
-.format-note strong {
-  color: #405875;
-}
-.format-note p {
-  color: #405875;
+.format-note__columns {
+  color: var(--text1);
 }
 .format-note__description {
   display: flex;

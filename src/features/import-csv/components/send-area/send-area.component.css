@@ -1,49 +1,50 @@
 .send-area {
   margin-top: var(--space-md);
   padding-top: var(--space-md);
-  border-top: 1px solid #e8edf4;
+  border-top: 1px solid var(--surface4);
 }
-.send-heading {
-  display: flex;
+.send-area__heading {
+  display: grid;
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--space-sm);
+  grid-template-columns: auto 1fr 1fr;
+  gap: var(--space-sm);
 }
-.send-heading h2 {
+.send-area__heading-title {
   margin: 0 0 var(--space-xxs);
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 650;
 }
-.send-heading p {
+.send-area__heading-description {
   margin: 0;
-  color: #718198;
-  font-size: 13px;
+  color: var(--text1);
+  font-size: 0.75rem;
 }
-.send-heading > i {
-  color: #3478d4;
-  font-size: 22px;
+.send-area__heading-icon {
+  color: var(--brand);
+  font-size: 1.5rem;
 }
-.send-area label {
+.send-area__heading-label {
   display: block;
-  margin-bottom: 7px;
-  color: #4d607a;
-  font-size: 13px;
+  margin-bottom: var(--space-xs);
+  color: var(--text1);
+  font-size: 0.75rem;
   font-weight: 600;
 }
-.strategy-select {
+.send-area__heading-select {
   width: 100%;
 }
-.send-button {
+
+.send-area__buttons-wrapper {
   margin-top: var(--space-sm);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
 }
 
 .p-button-secondary {
   background-color: transparent;
-  color: #3478d4;
-  border-color: #3478d4;
-}
-
-.send-area__buttons-wrapper {
-  display: flex;
-  gap: var(--space-md);
+  color: var(--brand);
+  border-color: var(--brand);
 }

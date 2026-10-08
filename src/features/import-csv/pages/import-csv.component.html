@@ -1,13 +1,13 @@
 <main class="import-csv">
   <app-upload-card>
     <ng-container *ngIf="!processedSales.length">
-      <app-format-note></app-format-note>
       <app-upload-area
         [(loading)]="loading"
         [(sending)]="sending"
         [(processedSales)]="processedSales"
         [(selectedFile)]="selectedFile"
       ></app-upload-area>
+      <app-format-note></app-format-note>
     </ng-container>
     <ng-container *ngIf="processedSales.length">
       <app-send-area
@@ -18,10 +18,5 @@
         [(processMode)]="processMode"
       ></app-send-area>
     </ng-container>
-
-    <app-processing-state
-      [loading]="loading"
-      [sending]="sending"
-    ></app-processing-state>
   </app-upload-card>
 </main>

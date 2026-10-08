@@ -3,42 +3,50 @@
   *ngIf="processedSales.length"
   aria-labelledby="send-title"
 >
-  <div class="send-heading">
+  <div class="send-area__heading">
+    <i
+      class="pi pi-cloud-upload send-area__heading-icon"
+      aria-hidden="true"
+    ></i>
     <div>
-      <h2 id="send-title">Enviar vendas ao backend</h2>
-      <p>{{ processedSales.length }} vendas validadas</p>
+      <h2 class="send-area__heading-title">Enviar vendas ao backend</h2>
+      <p class="send-area__heading-decription">
+        {{ processedSales.length }} vendas validadas
+      </p>
     </div>
-    <i class="pi pi-cloud-upload" aria-hidden="true"></i>
+    <div>
+      <label class="send-area__heading-label">Estratégia de envio</label>
+      <p-selectButton
+        [options]="processModes"
+        optionLabel="label"
+        optionValue="value"
+        [(ngModel)]="processMode"
+        [disabled]="sending"
+        styleClass="send-area__heading-select"
+      ></p-selectButton>
+    </div>
   </div>
-  <label>Estratégia de envio</label>
-  <p-selectButton
-    [options]="processModes"
-    optionLabel="label"
-    optionValue="value"
-    [(ngModel)]="processMode"
-    [disabled]="sending"
-    styleClass="strategy-select"
-  ></p-selectButton>
-  <div class="send-area__buttons-wrapper">
+  <div class="send-area__buttons-wrapper" *ngIf="!sending && !loading">
     <button
       pButton
       type="button"
-      class="send-button p-button-secondary"
+      class="p-button-secondary"
       label="Voltar"
-      icon="pi pi-back"
-      [disabled]="sending || loading"
       [loading]="sending"
       (click)="goBack()"
     ></button>
     <button
       pButton
       type="button"
-      class="submit-button send-button"
+      class="submit-button"
       label="Enviar vendas"
-      icon="pi pi-send"
-      [disabled]="sending || loading"
       [loading]="sending"
       (click)="sendSales()"
     ></button>
+
+    <app-processing-state
+      [loading]="loading"
+      [sending]="sending"
+    ></app-processing-state>
   </div>
 </section>
