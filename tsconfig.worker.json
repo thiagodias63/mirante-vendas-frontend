@@ -1,10 +1,10 @@
 /* TypeScript configuration for dedicated web workers. */
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./out-tsc/worker",
-    "lib": ["es2020", "webworker"],
-    "types": []
-  },
-  "include": ["src/**/*.worker.ts"]
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./out-tsc/worker",
+		"lib": ["es2020", "webworker"],
+		"types": []
+	},
+	"include": ["src/**/*.worker.ts"]
 }

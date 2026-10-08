@@ -1,0 +1,45 @@
+{
+	"root": true,
+	"ignorePatterns": ["dist/", "node_modules/", "package-lock.json", "karma.conf.js"],
+	"overrides": [
+		{
+			"files": ["*.ts"],
+			"extends": [
+				"eslint:recommended",
+				"plugin:@typescript-eslint/recommended",
+				"plugin:@angular-eslint/recommended",
+				"plugin:@angular-eslint/template/process-inline-templates",
+				"plugin:jsdoc/recommended"
+			],
+			"parser": "@typescript-eslint/parser",
+			"parserOptions": {
+				"project": ["tsconfig.json", "tsconfig.worker.json"],
+				"sourceType": "module"
+			},
+			"plugins": ["@typescript-eslint", "@angular-eslint", "jsdoc"],
+			"rules": {
+				"no-tabs": "off",
+				"no-prototype-builtins": "off",
+				"indent": "off",
+				"linebreak-style": "off",
+				"eqeqeq": ["error", "always"],
+				"max-len": ["error", { "code": 140, "ignorePattern": "^import .*" }],
+				"semi": ["error", "always"],
+				"no-unused-expressions": "error",
+				"no-unused-vars": "off",
+				"@typescript-eslint/no-unused-vars": "error",
+				"@typescript-eslint/prefer-readonly": "error",
+				"no-console": "error",
+				"@typescript-eslint/no-non-null-assertion": "off",
+				"@typescript-eslint/explicit-function-return-type": "error",
+				"@typescript-eslint/no-explicit-any": "warn",
+				"@angular-eslint/component-selector": ["error", { "type": "element", "prefix": "app", "style": "kebab-case" }],
+				"@angular-eslint/prefer-standalone": "off"
+			}
+		},
+		{
+			"files": ["*.html"],
+			"extends": ["plugin:@angular-eslint/template/recommended"]
+		}
+	]
+}

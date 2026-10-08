@@ -6,11 +6,11 @@ import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class VendaService {
-  private readonly endpoint = `${environment.apiUrl}/vendas`;
+	private readonly endpoint = `${environment.apiUrl}/vendas`;
 
-  constructor(private readonly http: HttpClient) {}
+	constructor(private readonly http: HttpClient) {}
 
-  create(venda: CsvVenda): Observable<unknown> {
-    return this.http.post<unknown>(this.endpoint, venda);
-  }
+	create(venda: CsvVenda): Observable<unknown> {
+		return this.http.post<unknown>(this.endpoint, venda);
+	}
 }
