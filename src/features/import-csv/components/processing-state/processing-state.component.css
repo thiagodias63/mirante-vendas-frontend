@@ -4,4 +4,5 @@
   margin: var(--space-md) var(--space-xxs) 0;
   color: var(--text1);
   font-size: 0.75rem;
+  text-align: center;
 }

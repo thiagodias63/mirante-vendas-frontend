@@ -3,13 +3,13 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { CsvVenda } from '../../core/interfaces/csv-venda';
-import { Toast } from '../../../../shared/toast/toast';
 import { ToastService } from 'src/shared/toast/toast.service';
 import { ProcessCsvService } from '../../core/service/process-csv.service';
+import { FileUpload } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-upload-area',
@@ -18,6 +18,8 @@ import { ProcessCsvService } from '../../core/service/process-csv.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadAreaComponent {
+  @ViewChild('fileUploadRef') fileUploadRef!: FileUpload;
+
   @Input() loading = false;
   @Input() sending = false;
   @Input() processedSales: CsvVenda[] = [];
@@ -37,6 +39,7 @@ export class UploadAreaComponent {
     this.selectedFileChange.emit(event.files[0] || null);
     this.processedSalesChange.emit([]);
     this.toastService.dismissToast();
+    this.fileUploadRef.clear();
   }
 
   async submit(): Promise<void> {
@@ -61,7 +64,7 @@ export class UploadAreaComponent {
       setTimeout(() => {
         this.loadingChange.emit(false);
         this.processedSalesChange.emit(this.processedSales);
-      }, 5_000);
+      }, 2_000);
     } catch (error) {
       errorMessage =
         error instanceof Error
