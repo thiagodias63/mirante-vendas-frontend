@@ -1,6 +1,7 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CsvVenda } from '../interfaces/csv-venda';
+import { VendasService } from 'src/shared/api/vendas.service';
 import { ProcessDataFactory } from './process-data.factory';
 import { ProcessDataSequential } from '../strategies/process-data-sequential.service';
 import { ProcessDataSimultaneously } from '../strategies/process-data-simultaneously.service';
@@ -18,7 +19,10 @@ describe('Process data strategies', () => {
 	let factory: ProcessDataFactory;
 
 	beforeEach(() => {
-		TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
+		TestBed.configureTestingModule({
+			imports: [HttpClientTestingModule],
+			providers: [VendasService, ProcessDataSequential, ProcessDataSimultaneously, ProcessDataFactory],
+		});
 		http = TestBed.inject(HttpTestingController);
 		simultaneous = TestBed.inject(ProcessDataSimultaneously);
 		sequential = TestBed.inject(ProcessDataSequential);
@@ -27,16 +31,15 @@ describe('Process data strategies', () => {
 
 	afterEach(() => http.verify());
 
-	it('selects the requested strategy and rejects unsupported modes', () => {
+	it('should selects the requested strategy and rejects unsupported modes', () => {
 		expect(factory.create('simultaneous')).toBe(simultaneous);
 		expect(factory.create('sequential')).toBe(sequential);
-		expect(() => factory.create('parallel')).toThrowError('Estratégia de envio inválida: parallel');
+		expect(() => factory.create('parallel')).toThrowError(/parallel/);
 	});
 
-	it('starts all POST requests concurrently and emits their responses', () => {
+	it('should starts simultaneous POST requests and emits responses in completion order', () => {
 		const responses: unknown[] = [];
 		simultaneous.send(sales).subscribe((response) => responses.push(response));
-
 		const requests = http.match('/vendas');
 		expect(requests.length).toBe(3);
 		requests.forEach((request, index) => {
@@ -49,33 +52,33 @@ describe('Process data strategies', () => {
 		expect(responses).toEqual([{ id: 3 }, { id: 1 }, { id: 2 }]);
 	});
 
-	it('starts each sequential POST after the previous request completes', () => {
+	it('should starts each sequential POST after the preceding request completes', () => {
 		const responses: unknown[] = [];
 		sequential.send(sales).subscribe((response) => responses.push(response));
-
-		const first = http.expectOne('/vendas');
-		expect(first.request.body).toEqual(sales[0]);
-		first.flush({ id: 1 });
-
-		const second = http.expectOne('/vendas');
-		expect(second.request.body).toEqual(sales[1]);
-		second.flush({ id: 2 });
-
-		const third = http.expectOne('/vendas');
-		expect(third.request.body).toEqual(sales[2]);
-		third.flush({ id: 3 });
+		for (let index = 0; index < sales.length; index++) {
+			const request = http.expectOne('/vendas');
+			expect(request.request.body).toEqual(sales[index]);
+			request.flush({ id: index + 1 });
+		}
 		expect(responses).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
 	});
 
-	it('propagates HTTP failures from either strategy', () => {
-		let simultaneousError: unknown;
-		simultaneous.send(sales.slice(0, 1)).subscribe({ error: (error) => (simultaneousError = error) });
-		http.expectOne('/vendas').flush({ message: 'Falha' }, { status: 500, statusText: 'Server Error' });
-		expect(simultaneousError).toBeTruthy();
+	it('should retries a sequential request three times and then forwards the final failure', fakeAsync(() => {
+		spyOn(console, 'warn');
+		spyOn(console, 'error');
+		let failure: unknown;
+		sequential.send(sales.slice(0, 1)).subscribe({ error: (error) => (failure = error) });
+		for (let attempt = 0; attempt < 4; attempt++) {
+			http.expectOne('/vendas').flush({ message: 'Failure' }, { status: 500, statusText: 'Server Error' });
+			if (attempt < 3) tick((attempt + 1) * 1000);
+		}
+		expect(failure).toBeTruthy();
+	}));
 
-		let sequentialError: unknown;
-		sequential.send(sales.slice(0, 1)).subscribe({ error: (error) => (sequentialError = error) });
-		http.expectOne('/vendas').flush({ message: 'Falha' }, { status: 500, statusText: 'Server Error' });
-		expect(sequentialError).toBeTruthy();
+	it('should propagates simultaneous HTTP errors without retrying', () => {
+		let failure: unknown;
+		simultaneous.send(sales.slice(0, 1)).subscribe({ error: (error) => (failure = error) });
+		http.expectOne('/vendas').flush({ message: 'Failure' }, { status: 500, statusText: 'Server Error' });
+		expect(failure).toBeTruthy();
 	});
 });

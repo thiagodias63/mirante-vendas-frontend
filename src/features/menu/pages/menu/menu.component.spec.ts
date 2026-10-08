@@ -1,25 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { MenuComponent } from './menu.component';
 
 describe('MenuComponent', () => {
-  let component: MenuComponent;
-  let fixture: ComponentFixture<MenuComponent>;
+	let fixture: ComponentFixture<MenuComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ MenuComponent ]
-    })
-    .compileComponents();
-  });
+	beforeEach(async () => {
+		await TestBed.configureTestingModule({
+			declarations: [MenuComponent],
+			imports: [RouterTestingModule],
+		}).compileComponents();
+		fixture = TestBed.createComponent(MenuComponent);
+		fixture.detectChanges();
+	});
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(MenuComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('creates the application menu', () => {
+		expect(fixture.componentInstance).toBeTruthy();
+		const links = fixture.nativeElement.querySelectorAll('.app-header__nav a') as NodeListOf<HTMLAnchorElement>;
+		expect(links.length).toBe(2);
+		expect(links[0].textContent).toContain('Dashboard');
+		expect(links[1].textContent).toContain('Importar CSV');
+	});
 });

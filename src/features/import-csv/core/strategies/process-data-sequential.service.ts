@@ -4,11 +4,11 @@ import { Observable, from, throwError, timer } from 'rxjs';
 import { concatMap, retry, catchError } from 'rxjs/operators';
 import { CsvVenda } from '../interfaces/csv-venda';
 import { ProcessData } from '../interfaces/process-data';
-import { VendaService } from '../api/venda.service';
+import { VendasService } from 'src/shared/api/vendas.service';
 
 @Injectable()
 export class ProcessDataSequential implements ProcessData {
-  constructor(private readonly vendaService: VendaService) {}
+  constructor(private readonly vendaService: VendasService) {}
 
   send(data: CsvVenda[]): Observable<unknown> {
     return from(data).pipe(

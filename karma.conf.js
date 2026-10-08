@@ -10,7 +10,8 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('karma-spec-reporter'), // Adicione esta linha
+      require('@angular-devkit/build-angular/plugins/karma'),
     ],
     client: {
       jasmine: {
@@ -32,7 +33,13 @@ module.exports = function (config) {
         { type: 'text-summary' }
       ]
     },
-    reporters: ['progress', 'kjhtml', 'coverage'],
+    customLaunchers: {
+      ChromeHeadlessCI: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage', '--disable-web-security', '--disable-extensions'],
+      },
+    },
+    reporters: ['spec', 'kjhtml'], // Substitua 'progress' por 'spec'
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,

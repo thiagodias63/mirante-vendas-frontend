@@ -1,0 +1,142 @@
+.dashboard {
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 2rem 1rem 3rem;
+}
+
+.dashboard__heading h1 {
+	margin: 0.4rem 0;
+	color: var(--text1);
+	font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+.dashboard__heading p {
+	margin: 0 0 0.8rem;
+	color: var(--text2);
+}
+
+.eyebrow {
+	color: var(--brand);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+}
+
+.dashboard__import-link {
+	color: var(--brand);
+	font-weight: 600;
+}
+
+.filters,
+.table-card,
+.chart-card {
+	margin-top: 1.25rem;
+	padding: 1.25rem;
+	border: 1px solid var(--surface4);
+	border-radius: var(--space-sm);
+	background: var(--surface2);
+	box-shadow: 0 8px 24px var(--surface3);
+}
+
+.filters {
+	display: flex;
+	align-items: end;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.filters__field {
+	display: flex;
+	min-width: 12rem;
+	flex: 1 1 12rem;
+	flex-direction: column;
+	gap: 0.45rem;
+}
+
+.filters__field label {
+	color: var(--text1);
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+:host ::ng-deep .filters__field .p-inputnumber,
+:host ::ng-deep .filters__field .p-calendar,
+:host ::ng-deep .filters__field .p-inputnumber-input,
+:host ::ng-deep .filters__field .p-calendar .p-inputtext {
+	width: 100%;
+}
+
+.filters__actions {
+	display: flex;
+	gap: 0.4rem;
+}
+
+.dashboard__error {
+	margin-top: 1rem;
+	color: #b42318;
+}
+
+.chart-card h2 {
+	margin: 0 0 1.25rem;
+	color: var(--text1);
+	font-size: 1.2rem;
+}
+
+.bar-chart {
+	display: flex;
+	min-height: 15rem;
+	align-items: stretch;
+	gap: 1rem;
+	overflow-x: auto;
+}
+
+.bar-chart__column {
+	display: grid;
+	min-width: 5rem;
+	flex: 1 0 5rem;
+	grid-template-rows: 1.5rem 1fr 2.5rem;
+	justify-items: center;
+	gap: 0.35rem;
+}
+
+.bar-chart__label {
+	overflow: hidden;
+	max-width: 100%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-align: center;
+}
+
+.bar-chart__track {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	align-items: end;
+	overflow: hidden;
+	border-radius: 0.4rem 0.4rem 0 0;
+	background: var(--surface3);
+}
+
+.bar-chart__bar {
+	width: 100%;
+	min-height: 3px;
+	border-radius: 0.4rem 0.4rem 0 0;
+	background: var(--brand);
+	transition: height 180ms ease;
+}
+
+.bar-chart__value {
+	align-self: end;
+}
+
+@media (max-width: 640px) {
+	.filters,
+	.table-card,
+	.chart-card {
+		padding: 0.9rem;
+	}
+
+	.filters__actions {
+		width: 100%;
+	}
+}

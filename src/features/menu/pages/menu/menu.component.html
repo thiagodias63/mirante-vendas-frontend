@@ -1,0 +1,10 @@
+<header class="app-header">
+	<a class="app-header__brand" routerLink="/dashboard" aria-label="Mirante Vendas - dashboard">
+		<i class="pi pi-chart-line" aria-hidden="true"></i>
+		<span>Mirante Vendas</span>
+	</a>
+	<nav class="app-header__nav" aria-label="Navegação principal">
+		<a routerLink="/dashboard" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+		<a routerLink="/importar-csv" routerLinkActive="is-active">Importar CSV</a>
+	</nav>
+</header>

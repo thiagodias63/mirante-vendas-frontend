@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CsvVenda } from '../interfaces/csv-venda';
-import { ProcessCsvWorkerResponse } from '../workers/process-csv.worker';
+import { ProcessCsvWorkerResponse } from '../workers/csv-parser';
 
 const CSV_VENDAS_STORAGE_KEY = 'csv-vendas';
 

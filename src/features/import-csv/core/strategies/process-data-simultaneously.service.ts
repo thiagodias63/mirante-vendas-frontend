@@ -3,11 +3,11 @@ import { from, Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { CsvVenda } from '../interfaces/csv-venda';
 import { ProcessData } from '../interfaces/process-data';
-import { VendaService } from '../api/venda.service';
+import { VendasService } from 'src/shared/api/vendas.service';
 
 @Injectable()
 export class ProcessDataSimultaneously implements ProcessData {
-	constructor(private readonly vendaService: VendaService) {}
+	constructor(private readonly vendaService: VendasService) {}
 
 	send(data: CsvVenda[]): Observable<unknown> {
 		return from(data).pipe(mergeMap((venda) => this.vendaService.create(venda)));

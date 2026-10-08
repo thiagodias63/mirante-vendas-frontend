@@ -11,7 +11,6 @@ import { RouterModule } from '@angular/router';
 import { ProcessCsvService } from './core/service/process-csv.service';
 import { ProcessDataSequential } from './core/strategies/process-data-sequential.service';
 import { ProcessDataSimultaneously } from './core/strategies/process-data-simultaneously.service';
-import { VendaService } from './core/api/venda.service';
 import { ProcessDataFactory } from './core/factories/process-data.factory';
 import { UploadCardComponent } from './components/upload-card/upload-card.component';
 import { UploadAreaComponent } from './components/upload-area/upload-area.component';
@@ -47,7 +46,6 @@ import { ProgressBarModule } from 'primeng/progressbar';
     SharedModule,
   ],
   providers: [
-    VendaService,
     ProcessDataSimultaneously,
     ProcessDataSequential,
     ProcessCsvService,
