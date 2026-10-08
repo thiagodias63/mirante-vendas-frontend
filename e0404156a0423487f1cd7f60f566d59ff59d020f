@@ -1,0 +1,61 @@
+src/features/dashboard/components/product-details-dialog/product-details-dialog.component.css
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-7
+src/features/dashboard/components/product-details-dialog/product-details-dialog.component.html
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-16
+src/features/dashboard/components/product-details-dialog/product-details-dialog.component.spec.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-85
+src/features/dashboard/components/product-details-dialog/product-details-dialog.component.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-67
+src/features/dashboard/components/sales-chart/sales-chart.component.css
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-29
+src/features/dashboard/components/sales-chart/sales-chart.component.html
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-6
+src/features/dashboard/components/sales-chart/sales-chart.component.spec.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-49
+src/features/dashboard/components/sales-chart/sales-chart.component.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-58
+src/features/dashboard/components/sales-table/sales-table.component.css
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-30
+src/features/dashboard/components/sales-table/sales-table.component.html
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-33
+src/features/dashboard/components/sales-table/sales-table.component.spec.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-79
+src/features/dashboard/components/sales-table/sales-table.component.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 1-67
+src/features/dashboard/dashboard.module.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 5,8-10,14,18
+src/features/dashboard/pages/dashboard/dashboard.component.css
+  s_0b887f4e9ce0c3::t_fce41910a8e183 7,13,18
+src/features/dashboard/pages/dashboard/dashboard.component.html
+  s_0b887f4e9ce0c3::t_fce41910a8e183 3-5,10-12,14,17
+src/features/dashboard/pages/dashboard/dashboard.component.spec.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 18,38,40,44-54,65-73,90,94-96
+src/features/dashboard/pages/dashboard/dashboard.component.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 22,40,44,53,74,78,86-89,91-97
+src/shared/api/vendas.service.spec.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 16-32,35,53,80
+src/shared/api/vendas.service.ts
+  s_0b887f4e9ce0c3::t_fce41910a8e183 49-52,60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "base_commit_sha": "c6fcbc1cee8831fc2a5c3f5413436fa1ae166989",
+  "prompts": {},
+  "sessions": {
+    "s_0b887f4e9ce0c3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ca4-a5a0-7ca1-97e3-2a70bb08f2c5",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "thiago.diasbittencourt-ext@ab-inbev.com",
+      "custom_attributes": {
+        "input_tokens": "17572667",
+        "output_tokens": "139294",
+        "cache_read_input_tokens": "17071104",
+        "operation_input_tokens": "17572667",
+        "operation_output_tokens": "139294"
+      }
+    }
+  }
+}
