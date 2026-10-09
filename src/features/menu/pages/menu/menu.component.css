@@ -4,11 +4,11 @@
 
 .app-header {
 	display: flex;
-	min-height: 4rem;
+	min-height: var(--space-xl);
 	align-items: center;
 	justify-content: space-between;
-	gap: 1rem;
-	padding: 0.75rem clamp(1rem, 4vw, 3rem);
+	gap: var(--space-sm);
+	padding: var(--space-xs) clamp(var(--space-sm), 4vw, var(--space-xl));
 	border-bottom: 1px solid var(--surface4);
 	background: var(--surface2);
 }
@@ -22,8 +22,8 @@
 .app-header__brand {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.6rem;
-	font-size: 1.05rem;
+	gap: var(--space-xs);
+	font-size: var(--space-sm);
 	font-weight: 700;
 }
 
@@ -34,13 +34,13 @@
 .app-header__nav {
 	display: flex;
 	align-items: center;
-	gap: 0.5rem;
+	gap: var(--space-xs);
 }
 
 .app-header__nav a {
-	padding: 0.55rem 0.8rem;
-	border-radius: 0.4rem;
-	font-size: 0.9rem;
+	padding: var(--space-xs) var(--space-sm);
+	border-radius: var(--space-xxs);
+	font-size: var(--space-xs);
 }
 
 .app-header__nav a:hover,

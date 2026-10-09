@@ -1,7 +1,7 @@
 .dashboard {
 	max-width: 1180px;
 	margin: 0 auto;
-	padding: 2rem 1rem 3rem;
+	padding: var(--space-lg) var(--space-sm) var(--space-xl);
 }
 
 .dashboard__title {
@@ -10,7 +10,7 @@
 }
 
 .dashboard__description {
-	margin: 0 0 0.8rem;
+	margin: 0 0 var(--space-xs);
 	color: var(--text2);
 }
 
@@ -22,7 +22,7 @@
 }
 
 .dashboard__error {
-	margin-top: 1rem;
+	margin-top: var(--space-sm);
 	color: #b42318;
 }
 
