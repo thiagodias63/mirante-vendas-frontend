@@ -44,11 +44,14 @@ describe('DashboardComponent', () => {
 		expect(fixture.nativeElement.querySelector('app-product-details-dialog')).toBeTruthy();
 	});
 
-	it('should renders only the view selected by the mode control', () => {
+	it('should renders "sales-table" when selected by the mode control', () => {
+		component.viewMode = 'table';
 		fixture.detectChanges();
 		expect(fixture.nativeElement.querySelector('app-sales-table')).toBeTruthy();
 		expect(fixture.nativeElement.querySelector('app-sales-chart')).toBeNull();
+	});
 
+	it('should renders "sales-dashboard" when selected by the mode control', () => {
 		component.viewMode = 'chart';
 		fixture.detectChanges();
 

@@ -44,6 +44,7 @@ describe('SalesChartComponent', () => {
 				{ produto: 'Calça', quantidade: 1 },
 			],
 		});
+		fixture.detectChanges();
 
 		expect(component.products).toEqual(state.value.chartProducts);
 		expect(component.chartData.labels).toEqual(['Camiseta', 'Calça']);
