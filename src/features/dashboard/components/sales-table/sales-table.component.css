@@ -22,3 +22,11 @@
 		padding: var(--space-xxs);
 	}
 }
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+	background-color: var(--surface1);
+	color: var(--text2);
+}
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+	background-color: var(--surface3);
+	color: var(--text1);
+}
