@@ -1,15 +1,6 @@
 <section
 	class="sales-table"
 	aria-label="Vendas agrupadas por produto e dia">
-	<div class="sales-table__toolbar">
-		<button
-			pButton
-			type="button"
-			class="sales-table__export-button"
-			icon="pi pi-download"
-			label="Exportar CSV"
-			(click)="exportToCsv()"></button>
-	</div>
 	<ng-container *ngIf="dashboardState.state$ | async as dashboard">
 		<p-table
 			[value]="dashboard.products || []"

@@ -7,6 +7,12 @@ import { DashboardStateService } from '../../state/dashboard-state.service';
 	styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent {
+	readonly viewModes = [
+		{ label: 'Tabela', value: 'table' },
+		{ label: 'Gráfico', value: 'chart' },
+	];
+	viewMode: 'table' | 'chart' = 'table';
+
 	constructor(readonly dashboardState: DashboardStateService) {}
 
 	showDetails(product: string): void {

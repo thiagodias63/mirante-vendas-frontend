@@ -25,3 +25,18 @@
 	margin-top: 1rem;
 	color: #b42318;
 }
+
+.dashboard__view-controls {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-sm);
+	margin-top: var(--space-md);
+}
+
+@media (max-width: 480px) {
+	.dashboard__view-controls {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}

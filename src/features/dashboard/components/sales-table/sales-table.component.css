@@ -13,12 +13,6 @@
 	gap: var(--space-xs);
 }
 
-.sales-table__toolbar {
-	display: flex;
-	justify-content: flex-end;
-	margin-bottom: var(--space-sm);
-}
-
 .sales-table__details-button {
 	white-space: nowrap;
 }

@@ -17,9 +17,18 @@
 		{{ errorMessage }}
 	</p>
 
-	<app-sales-table (productSelected)="showDetails($event)"></app-sales-table>
+	<div class="dashboard__view-controls">
+		<p-selectButton
+			[options]="viewModes"
+			[(ngModel)]="viewMode"
+			optionLabel="label"
+			optionValue="value"
+			aria-label="Modo de visualização"></p-selectButton>
+		<app-sales-export-button></app-sales-export-button>
+	</div>
 
-	<app-sales-chart></app-sales-chart>
+	<app-sales-table *ngIf="viewMode === 'table'" (productSelected)="showDetails($event)"></app-sales-table>
+	<app-sales-chart *ngIf="viewMode === 'chart'"></app-sales-chart>
 </main>
 
 <app-product-details-dialog></app-product-details-dialog>
