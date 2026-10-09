@@ -3,63 +3,63 @@
 }
 
 .app-header {
-	display: block;
-}
-
-:host ::ng-deep .app-header .p-toolbar {
+	display: flex;
 	min-height: 4rem;
+	align-items: center;
+	justify-content: space-between;
 	gap: 1rem;
 	padding: 0.75rem clamp(1rem, 4vw, 3rem);
-	border: 0;
 	border-bottom: 1px solid var(--surface4);
-	border-radius: 0;
 	background: var(--surface2);
+}
+
+.app-header__brand,
+.app-header__nav a {
+	color: var(--text1);
+	text-decoration: none;
 }
 
 .app-header__brand {
 	display: inline-flex;
-	flex-shrink: 0;
 	align-items: center;
 	gap: 0.6rem;
-	color: var(--text1);
 	font-size: 1.05rem;
 	font-weight: 700;
-	text-decoration: none;
 }
 
 .app-header__brand i {
 	color: var(--brand);
 }
 
-:host ::ng-deep .app-header__menubar .p-menubar {
-	justify-content: flex-end;
-	border: 0;
-	background: transparent;
-	padding: 0;
+.app-header__nav {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
 }
 
-:host ::ng-deep .app-header__menubar .p-menuitem-link {
+.app-header__nav a {
+	padding: 0.55rem 0.8rem;
 	border-radius: 0.4rem;
+	font-size: 0.9rem;
 }
 
-:host ::ng-deep .app-header__menubar .p-menuitem-link:hover,
-:host ::ng-deep .app-header__menubar .p-menuitem-link-active {
+.app-header__nav a:hover,
+.app-header__nav a.is-active {
 	color: var(--brand);
 	background: var(--surface3);
 }
 
 @media (max-width: 480px) {
-	:host ::ng-deep .app-header .p-toolbar {
+	.app-header {
 		align-items: flex-start;
 		flex-direction: column;
 	}
 
-	:host ::ng-deep .app-header .p-toolbar-group-right,
-	:host ::ng-deep .app-header__menubar {
+	.app-header__nav {
 		width: 100%;
 	}
 
-	:host ::ng-deep .app-header__menubar .p-menubar {
-		justify-content: flex-start;
+	.app-header__nav a {
+		padding-left: 0;
 	}
 }
