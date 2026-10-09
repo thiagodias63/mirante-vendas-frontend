@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { VendaPage, VendasService } from 'src/shared/api/vendas.service';
+import { DashboardStateService } from '../../state/dashboard-state.service';
 import { DashboardComponent } from './dashboard.component';
 
 describe('DashboardComponent', () => {
@@ -28,7 +29,7 @@ describe('DashboardComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [DashboardComponent],
 			imports: [CommonModule, FormsModule],
-			providers: [{ provide: VendasService, useValue: vendas }],
+			providers: [{ provide: VendasService, useValue: vendas }, DashboardStateService],
 			schemas: [NO_ERRORS_SCHEMA],
 		}).compileComponents();
 		fixture = TestBed.createComponent(DashboardComponent);
@@ -36,13 +37,13 @@ describe('DashboardComponent', () => {
 	});
 
 	it('keeps individual records from the backend for table and chart aggregation', () => {
-		component.loadSales();
-		expect(component.sales).toEqual(firstPage.data);
-		expect(component.totalItems).toBe(3);
+		component.dashboardState.loadSales();
+		expect(component.dashboardState.state.sales).toEqual(firstPage.data);
+		expect(component.dashboardState.state.totalItems).toBe(3);
 	});
 
 	it('maps table pagination, sorting, and column filters to backend parameters', () => {
-		component.loadSales({
+		component.dashboardState.loadSales({
 			first: 25,
 			rows: 25,
 			sortField: 'quantidade',
@@ -63,7 +64,7 @@ describe('DashboardComponent', () => {
 	});
 
 	it('omits filters cleared from the table columns', () => {
-		component.loadSales({
+		component.dashboardState.loadSales({
 			first: 0,
 			rows: 10,
 			filters: {
@@ -81,14 +82,13 @@ describe('DashboardComponent', () => {
 
 	it('clears table data and displays an error when the page request fails', () => {
 		vendas.getAll.and.returnValue(throwError(() => new Error('backend unavailable')));
-		component.loadSales();
-		expect(component.totalItems).toBe(0);
-		expect(component.errorMessage).toBeTruthy();
-		expect(component.loading).toBeFalse();
+		component.dashboardState.loadSales();
+		expect(component.dashboardState.state.totalItems).toBe(0);
+		expect(component.dashboardState.state.errorMessage).toBeTruthy();
+		expect(component.dashboardState.state.loading).toBeFalse();
 	});
 
 	it('renders the extracted table and chart components', () => {
-		component.loadSales();
 		fixture.detectChanges();
 		expect(fixture.nativeElement.textContent).toContain('Dashboard de vendas');
 		expect(fixture.nativeElement.querySelector('app-sales-table')).toBeTruthy();

@@ -1,11 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
-import { Venda } from 'src/shared/api/vendas.service';
-
-interface ProductSummary {
-	produto: string;
-	quantidade: number;
-}
+import { DashboardStateService } from '../../state/dashboard-state.service';
 
 @Component({
 	selector: 'app-sales-table',
@@ -13,26 +8,12 @@ interface ProductSummary {
 	styleUrls: ['./sales-table.component.css'],
 })
 export class SalesTableComponent {
-	products: ProductSummary[] = [];
-
-	@Input() set sales(value: Venda[]) {
-		const grouped = new Map<string, number>();
-		for (const sale of value || []) {
-			grouped.set(sale.produto, (grouped.get(sale.produto) || 0) + sale.quantidade);
-		}
-		this.products = Array.from(grouped, ([produto, quantidade]) => ({ produto, quantidade }));
-	}
-	@Input() totalItems = 0;
-	@Input() size = 10;
-	@Input() first = 0;
-	@Input() loading = false;
-	@Input() pageSizeOptions = [10, 25, 50];
-
-	@Output() readonly lazyLoad = new EventEmitter<LazyLoadEvent>();
 	@Output() readonly productSelected = new EventEmitter<string>();
 
+	constructor(readonly dashboardState: DashboardStateService) {}
+
 	requestPage(event: LazyLoadEvent): void {
-		this.lazyLoad.emit(event);
+		this.dashboardState.loadSales(event);
 	}
 
 	selectProduct(product: string): void {
@@ -56,7 +37,15 @@ export class SalesTableComponent {
 	}
 
 	private buildCsvContent(): string {
-		const rows = [['Produto', 'Quantidade vendida'], ...this.products.map((product) => [product.produto, String(product.quantidade)])];
+		const rows = [
+			['Produto', 'Data da venda', 'Quantidade vendida', 'Preço unitário somado'],
+			...this.dashboardState.state.products.map((product) => [
+				product.produto,
+				product.dataVenda,
+				String(product.quantidade),
+				String(product.precoUnitario),
+			]),
+		];
 
 		return `\uFEFF${rows.map((row) => row.map((value) => this.escapeCsvValue(value)).join(';')).join('\r\n')}`;
 	}

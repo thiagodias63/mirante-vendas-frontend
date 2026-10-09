@@ -9,6 +9,7 @@ import { SalesChartComponent } from './components/sales-chart/sales-chart.compon
 import { ProductDetailsDialogComponent } from './components/product-details-dialog/product-details-dialog.component';
 import { SalesTableComponent } from './components/sales-table/sales-table.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DashboardStateService } from './state/dashboard-state.service';
 
 @NgModule({
 	declarations: [DashboardComponent, SalesTableComponent, SalesChartComponent, ProductDetailsDialogComponent],
@@ -20,5 +21,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 		TableModule,
 		RouterModule.forChild([{ path: '', component: DashboardComponent }]),
 	],
+	providers: [DashboardStateService],
 })
 export class DashboardModule {}

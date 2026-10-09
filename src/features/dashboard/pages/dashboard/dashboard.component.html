@@ -1,17 +1,25 @@
-<main class="dashboard page-shell" aria-labelledby="dashboard-title">
-	<header class="dashboard__heading">
-		<div class="dashboard__eyebrow"><i class="pi pi-chart-bar" aria-hidden="true"></i> MIRANTE VENDAS</div>
-		<h1 id="dashboard-title" class="dashboard__title">Dashboard de vendas</h1>
-		<p class="dashboard__description">A tabela lista as vendas; o resumo agrupa as quantidades por produto nesta p&aacute;gina.</p>
-	</header>
+<main
+	class="dashboard page-shell"
+	aria-labelledby="dashboard-title">
+	<h1
+		id="dashboard-title"
+		class="dashboard__title">
+		Dashboard de vendas
+	</h1>
+		<p class="dashboard__description">A tabela agrupa quantidade e pre&ccedil;o por produto e dia; o gr&aacute;fico mostra a quantidade vendida em cada data.</p>
 
-	<p *ngIf="errorMessage" class="dashboard__error" role="alert">{{ errorMessage }}</p>
+	<p
+		*ngIf="(dashboardState.state$ | async)?.errorMessage as errorMessage"
+		class="dashboard__error"
+		role="alert">
+		{{ errorMessage }}
+	</p>
 
-	<app-sales-table [sales]="sales" [totalItems]="totalItems" [size]="size" [first]="tableFirst"
-		[loading]="loading" [pageSizeOptions]="pageSizeOptions" (lazyLoad)="loadSales($event)"
-		(productSelected)="showDetails($event)"></app-sales-table>
+	<app-sales-table (productSelected)="showDetails($event)"></app-sales-table>
 
-	<app-sales-chart [sales]="sales"></app-sales-chart>
+	<app-sales-chart></app-sales-chart>
 </main>
 
-<app-product-details-dialog [(visible)]="detailsVisible" [product]="selectedProduct"></app-product-details-dialog>
+<app-product-details-dialog
+	[(visible)]="detailsVisible"
+	[product]="selectedProduct"></app-product-details-dialog>

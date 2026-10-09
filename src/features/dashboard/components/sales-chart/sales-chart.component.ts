@@ -1,11 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
-import { Venda } from 'src/shared/api/vendas.service';
-
-export interface ProductSummary {
-	produto: string;
-	quantidade: number;
-}
+import { DashboardStateService, ProductSummary } from '../../state/dashboard-state.service';
 
 @Component({
 	selector: 'app-sales-chart',
@@ -31,28 +26,17 @@ export class SalesChartComponent {
 		},
 	};
 
-	@Input() set sales(value: Venda[]) {
-		this.products = this.groupByProduct(value || []);
-		this.chartData = {
-			labels: this.products.map((product) => product.produto),
-			datasets: [{
-				label: 'Quantidade vendida',
-				data: this.products.map((product) => product.quantidade),
-				backgroundColor: '#3b82f6',
-			}],
-		};
-	}
-
-	private groupByProduct(sales: Venda[]): ProductSummary[] {
-		const grouped = new Map<string, ProductSummary>();
-		for (const sale of sales) {
-			const summary = grouped.get(sale.produto) || {
-				produto: sale.produto,
-				quantidade: 0,
+	constructor(dashboardState: DashboardStateService) {
+		dashboardState.state$.subscribe(({ products }) => {
+			this.products = products;
+			this.chartData = {
+				labels: this.products.map((product) => `${product.produto} (${product.dataVenda})`),
+				datasets: [{
+					label: 'Quantidade vendida',
+					data: this.products.map((product) => product.quantidade),
+					backgroundColor: '#3b82f6',
+				}],
 			};
-			summary.quantidade += sale.quantidade;
-			grouped.set(sale.produto, summary);
-		}
-		return Array.from(grouped.values());
+		});
 	}
 }

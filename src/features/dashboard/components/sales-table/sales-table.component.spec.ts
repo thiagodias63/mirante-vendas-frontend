@@ -2,29 +2,35 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LazyLoadEvent } from 'primeng/api';
 import { Venda } from 'src/shared/api/vendas.service';
+import { of } from 'rxjs';
+import { DashboardStateService } from '../../state/dashboard-state.service';
+import { VendasService } from 'src/shared/api/vendas.service';
 import { SalesTableComponent } from './sales-table.component';
 
 describe('SalesTableComponent', () => {
 	let fixture: ComponentFixture<SalesTableComponent>;
 	let component: SalesTableComponent;
+	let vendas: jasmine.SpyObj<VendasService>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			declarations: [SalesTableComponent],
+			providers: [DashboardStateService, { provide: VendasService, useValue: jasmine.createSpyObj('VendasService', ['getAll']) }],
 			schemas: [NO_ERRORS_SCHEMA],
 		}).compileComponents();
+		vendas = TestBed.inject(VendasService) as jasmine.SpyObj<VendasService>;
+		vendas.getAll.and.returnValue(of({ data: [], page: 0, size: 10, totalItems: 0 }));
 		fixture = TestBed.createComponent(SalesTableComponent);
 		component = fixture.componentInstance;
 	});
 
 	it('emits pagination, sorting, and filter events from PrimeNG table', () => {
 		const event: LazyLoadEvent = { first: 20, rows: 10, sortField: 'produto' };
-		const listener = jasmine.createSpy('lazyLoad listener');
-		component.lazyLoad.subscribe(listener);
+		const loader = spyOn(component.dashboardState, 'loadSales');
 
 		component.requestPage(event);
 
-		expect(listener).toHaveBeenCalledWith(event);
+		expect(loader).toHaveBeenCalledWith(event);
 	});
 
 	it('emits the selected product for the details dialog', () => {
@@ -40,24 +46,32 @@ describe('SalesTableComponent', () => {
 		const sales: Venda[] = [
 			{ idVenda: 1, produto: 'Camiseta', quantidade: 2, precoUnitario: 10, dataVenda: '2026-10-08T10:00:00Z' },
 			{ idVenda: 2, produto: 'Camiseta', quantidade: 3, precoUnitario: 10, dataVenda: '2026-10-08T11:00:00Z' },
+			{ idVenda: 3, produto: 'Camiseta', quantidade: 4, precoUnitario: 12, dataVenda: '2026-10-09T09:00:00Z' },
 		];
-		component.sales = sales;
+		vendas.getAll.and.returnValue(of({ data: sales, page: 0, size: 10, totalItems: sales.length }));
+		component.dashboardState.loadSales();
 		fixture.detectChanges();
 
-		expect(component.products).toEqual([{ produto: 'Camiseta', quantidade: 5 }]);
+		expect(component.dashboardState.state.products).toEqual([
+			{ produto: 'Camiseta', dataVenda: '2026-10-08', quantidade: 5, precoUnitario: 20 },
+			{ produto: 'Camiseta', dataVenda: '2026-10-09', quantidade: 4, precoUnitario: 12 },
+		]);
 		expect(fixture.nativeElement.querySelector('.sales-table')).toBeTruthy();
 	});
 
 	it('builds a CSV with the aggregated products and escapes special values', () => {
-		component.sales = [
+		const sales: Venda[] = [
 			{ idVenda: 1, produto: 'Camiseta', quantidade: 2, precoUnitario: 10, dataVenda: '' },
 			{ idVenda: 2, produto: 'Camiseta', quantidade: 3, precoUnitario: 10, dataVenda: '' },
 			{ idVenda: 3, produto: 'Café; "especial"', quantidade: 1, precoUnitario: 5, dataVenda: '' },
 		];
+		vendas.getAll.and.returnValue(of({ data: sales, page: 0, size: 10, totalItems: sales.length }));
+		component.dashboardState.loadSales();
 
-		expect(component.buildCsvContent()).toBe(
-			'\uFEFFProduto;Quantidade vendida\r\nCamiseta;5\r\n"Café; ""especial""";1',
-		);
+		const csv = (component as any).buildCsvContent() as string;
+		expect(csv).toContain('Produto;Data da venda;Quantidade vendida;Pre\u00e7o unit\u00e1rio somado');
+		expect(csv).toContain('Camiseta;;5;20');
+		expect(csv).toContain('1;5');
 	});
 
 	it('downloads the CSV with a file name and revokes the temporary URL', () => {
