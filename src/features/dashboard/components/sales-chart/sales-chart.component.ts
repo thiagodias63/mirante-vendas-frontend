@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { ChartProductSummary, DashboardStateService } from '../../state/dashboard-state.service';
+import { tap } from 'rxjs';
 
 @Component({
 	selector: 'app-sales-chart',
@@ -29,8 +30,8 @@ export class SalesChartComponent {
 		},
 	};
 
-	constructor(private readonly dashboardState: DashboardStateService) {
-		dashboardState.state$.subscribe(({ chartProducts, chartLoading, chartErrorMessage }) => {
+	vm$ = this.dashboardState.state$.pipe(
+		tap(({ chartProducts, chartLoading, chartErrorMessage }) => {
 			this.products = chartProducts;
 			this.loading = chartLoading;
 			this.errorMessage = chartErrorMessage;
@@ -44,8 +45,10 @@ export class SalesChartComponent {
 					},
 				],
 			};
-		});
-	}
+		}),
+	);
+
+	constructor(private readonly dashboardState: DashboardStateService) {}
 
 	ngOnInit(): void {
 		this.dashboardState.loadChartSales();

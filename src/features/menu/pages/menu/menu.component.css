@@ -40,7 +40,7 @@
 .app-header__nav a {
 	padding: var(--space-xs) var(--space-sm);
 	border-radius: var(--space-xxs);
-	font-size: var(--space-xs);
+	font-size: var(--space-sm);
 }
 
 .app-header__nav a:hover,

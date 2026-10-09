@@ -123,7 +123,6 @@ export class DashboardStateService {
 			orderBy: 'produto',
 			orderDirection: 'asc',
 		};
-
 		this.update({ ...this.state, chartLoading: true, chartErrorMessage: '' });
 		this.vendasService.getAll(params).subscribe({
 			next: (response) =>
