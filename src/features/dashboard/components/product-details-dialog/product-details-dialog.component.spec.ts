@@ -17,10 +17,9 @@ describe('ProductDetailsDialogComponent', () => {
 	];
 
 	beforeEach(async () => {
-		vendas = jasmine.createSpyObj<VendasService>('VendasService', ['getAll', 'getOne']);
+		vendas = jasmine.createSpyObj<VendasService>('VendasService', ['getAll']);
 		const page: VendaPage = { data: sales, page: 0, size: 100, totalItems: 3 };
 		vendas.getAll.and.returnValue(of(page));
-		vendas.getOne.and.callFake((id) => of(sales.find((sale) => sale.idVenda === id) as Venda));
 		await TestBed.configureTestingModule({
 			declarations: [ProductDetailsDialogComponent],
 			imports: [CommonModule],
@@ -43,9 +42,6 @@ describe('ProductDetailsDialogComponent', () => {
 			orderDirection: 'asc',
 			Produto: '*Camiseta*',
 		});
-		expect(vendas.getOne).toHaveBeenCalledTimes(2);
-		expect(vendas.getOne).toHaveBeenCalledWith(1);
-		expect(vendas.getOne).toHaveBeenCalledWith(2);
 		expect(component.details.map((sale) => sale.idVenda)).toEqual([1, 2]);
 		expect(component.loading).toBeFalse();
 	});

@@ -54,10 +54,6 @@ export class ProductDetailsDialogComponent implements OnChanges {
 				if (!response.data.length) break;
 				page++;
 			} while (page * pageSize < totalItems);
-
-			if (matchingSales.length) {
-				this.details = await firstValueFrom(forkJoin(matchingSales.map((sale) => this.vendasService.getOne(sale.idVenda))));
-			}
 		} catch {
 			this.errorMessage = 'Could not load this product sales.';
 		} finally {

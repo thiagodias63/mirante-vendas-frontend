@@ -129,7 +129,7 @@ function parseCsvRow(line: string, lineNumber: number): CsvVenda {
  * @returns {CsvVenda[]} Lista de objetos `CsvVenda` validados e tipados.
  * @throws {Error} Se o arquivo estiver vazio, com cabeçalho inválido, sem registros ou com linhas malformatadas.
  */
-function parseCsv(content: string): CsvVenda[] {
+export function parseCsv(content: string): CsvVenda[] {
 	const lines = sanitizeLines(content);
 
 	validateHeader(lines[0]);

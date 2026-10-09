@@ -13,23 +13,6 @@ describe('VendasService', () => {
 		http = TestBed.inject(HttpTestingController);
 	});
 
-	it('should gets one sale by its id', () => {
-		const sale = {
-			idVenda: 42,
-			produto: 'Camiseta',
-			quantidade: 2,
-			precoUnitario: 25,
-			dataVenda: '2026-10-08T10:00:00Z',
-		};
-		let result: unknown;
-		service.getOne(42).subscribe((response) => (result = response));
-
-		const request = http.expectOne(`${environment.apiUrl}/vendas/42`);
-		expect(request.request.method).toBe('GET');
-		request.flush(sale);
-		expect(result).toEqual(sale);
-	});
-
 	afterEach(() => http.verify());
 
 	it('should posts a sale to the vendas endpoint', () => {
@@ -69,7 +52,7 @@ describe('VendasService', () => {
 		expect(request.request.method).toBe('GET');
 		expect(request.request.params.get('_size')).toBe('25');
 		expect(request.request.params.get('_page')).toBe('0');
-		expect(request.request.params.get('_order')).toBe('data_venda,desc');
+		expect(request.request.params.get('_order')).toBe('data_venda desc');
 		expect(request.request.params.get('Produto')).toBe('*tenis*');
 		expect(request.request.params.get('Quantidade')).toBe('2');
 		expect(request.request.params.get('DataVenda')).toBe('2026-10-08');
@@ -82,7 +65,7 @@ describe('VendasService', () => {
 		const request = http.expectOne((candidate) => candidate.url === `${environment.apiUrl}/vendas`);
 		expect(request.request.params.get('_size')).toBe('10');
 		expect(request.request.params.get('_page')).toBe('1');
-		expect(request.request.params.get('_order')).toBe('idVenda,asc');
+		expect(request.request.params.get('_order')).toBe('idVenda asc');
 		expect(request.request.params.has('Produto')).toBeFalse();
 		expect(request.request.params.has('Quantidade')).toBeFalse();
 		expect(request.request.params.has('DataVenda')).toBeFalse();

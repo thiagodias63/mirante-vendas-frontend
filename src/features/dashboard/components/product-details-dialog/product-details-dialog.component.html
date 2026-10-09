@@ -1,16 +1,50 @@
-<p-dialog [visible]="visible" (visibleChange)="setVisible($event)"
-	[header]="'Vendas de ' + product" [modal]="true"
-	[style]="{ width: 'min(56rem, 95vw)' }" [maximizable]="true">
-	<p *ngIf="loading" class="product-details-dialog__status">Carregando ocorr&ecirc;ncias...</p>
-	<p *ngIf="errorMessage" class="product-details-dialog__error" role="alert">{{ errorMessage }}</p>
-	<p-table *ngIf="!loading && !errorMessage" [value]="details" [paginator]="true" [rows]="10"
-		[rowsPerPageOptions]="[10, 25, 50]" responsiveLayout="scroll">
+<p-dialog
+	[visible]="visible"
+	(visibleChange)="setVisible($event)"
+	[header]="'Vendas de ' + product"
+	[modal]="true"
+	[style]="{ width: 'min(56rem, 95vw)' }"
+	[maximizable]="true">
+	<p
+		*ngIf="loading"
+		class="product-details-dialog__status">
+		Carregando ocorr&ecirc;ncias...
+	</p>
+	<p
+		*ngIf="errorMessage"
+		class="product-details-dialog__error"
+		role="alert">
+		{{ errorMessage }}
+	</p>
+	<p-table
+		*ngIf="!loading && !errorMessage"
+		[value]="details"
+		[paginator]="true"
+		[rows]="10"
+		[rowsPerPageOptions]="[10, 25, 50]"
+		responsiveLayout="scroll">
 		<ng-template pTemplate="header">
-			<tr><th>ID da venda</th><th>Produto</th><th>Quantidade</th><th>Pre&ccedil;o unit&aacute;rio</th><th>Data da venda</th></tr>
+			<tr>
+				<th>ID da venda</th>
+				<th>Produto</th>
+				<th>Quantidade</th>
+				<th>Pre&ccedil;o unit&aacute;rio</th>
+				<th>Data da venda</th>
+			</tr>
 		</ng-template>
-		<ng-template pTemplate="body" let-sale>
-			<tr><td>{{ sale.idVenda }}</td><td>{{ sale.produto }}</td><td>{{ sale.quantidade }}</td><td>{{ sale.precoUnitario | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td><td>{{ sale.dataVenda | date:'dd/MM/yyyy HH:mm' }}</td></tr>
+		<ng-template
+			pTemplate="body"
+			let-sale>
+			<tr>
+				<td>{{ sale.idVenda }}</td>
+				<td>{{ sale.produto }}</td>
+				<td>{{ sale.quantidade }}</td>
+				<td>{{ sale.precoUnitario | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</td>
+				<td>{{ sale.dataVenda | date: 'dd/MM/yyyy HH:mm' }}</td>
+			</tr>
 		</ng-template>
-		<ng-template pTemplate="emptymessage"><tr><td colspan="5">Nenhuma ocorr&ecirc;ncia encontrada.</td></tr></ng-template>
+		<ng-template pTemplate="emptymessage">
+			<tr><td colspan="5">Nenhuma ocorr&ecirc;ncia encontrada.</td></tr>
+		</ng-template>
 	</p-table>
 </p-dialog>

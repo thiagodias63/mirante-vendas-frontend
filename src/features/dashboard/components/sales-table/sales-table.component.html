@@ -1,37 +1,85 @@
-<section class="sales-table" aria-label="Vendas agrupadas por produto e dia">
+<section
+	class="sales-table"
+	aria-label="Vendas agrupadas por produto e dia">
 	<div class="sales-table__toolbar">
-		<button pButton type="button" class="sales-table__export-button" icon="pi pi-download"
-			label="Exportar CSV" (click)="exportToCsv()"></button>
+		<button
+			pButton
+			type="button"
+			class="sales-table__export-button"
+			icon="pi pi-download"
+			label="Exportar CSV"
+			(click)="exportToCsv()"></button>
 	</div>
-	<p-table [value]="(dashboardState.state$ | async)?.products || []" [lazy]="true" [paginator]="true" [first]="(dashboardState.state$ | async)?.tableFirst || 0" [rows]="(dashboardState.state$ | async)?.size || 10"
-		[rowsPerPageOptions]="dashboardState.pageSizeOptions" [totalRecords]="(dashboardState.state$ | async)?.totalItems || 0" [loading]="(dashboardState.state$ | async)?.loading || false"
-		(onLazyLoad)="requestPage($event)" responsiveLayout="scroll">
-		<ng-template pTemplate="header">
-			<tr>
-				<th pSortableColumn="produto">
-					<div class="sales-table__heading">Produto <p-sortIcon field="produto"></p-sortIcon></div>
-					<p-columnFilter type="text" field="produto" display="menu" matchMode="contains" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"></p-columnFilter>
-				</th>
-				<th>Data da venda</th>
-				<th pSortableColumn="quantidade">
-					<div class="sales-table__heading">Quantidade vendida <p-sortIcon field="quantidade"></p-sortIcon></div>
-					<p-columnFilter type="numeric" field="quantidade" display="menu" matchMode="equals" [maxFractionDigits]="0" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false"></p-columnFilter>
-				</th>
-				<th>Pre&ccedil;o unit&aacute;rio somado</th>
-				<th>A&ccedil;&otilde;es</th>
-			</tr>
-		</ng-template>
-		<ng-template pTemplate="body" let-product>
-			<tr>
-				<td>{{ product.produto }}</td>
-				<td>{{ product.dataVenda }}</td>
-				<td>{{ product.quantidade }}</td>
-				<td>{{ product.precoUnitario | currency:'BRL':'symbol':'1.2-2' }}</td>
-				<td><button pButton type="button" class="sales-table__details-button p-button-text" icon="pi pi-eye" label="Detalhes" (click)="selectProduct(product.produto)"></button></td>
-			</tr>
-		</ng-template>
-		<ng-template pTemplate="emptymessage">
-			<tr><td colspan="5">Nenhuma venda encontrada.</td></tr>
-		</ng-template>
-	</p-table>
+	<ng-container *ngIf="dashboardState.state$ | async as dashboard">
+		<p-table
+			[value]="dashboard.products || []"
+			[lazy]="true"
+			[paginator]="true"
+			[first]="dashboard.tableFirst || 0"
+			[rows]="dashboard.size || 10"
+			[rowsPerPageOptions]="dashboardState.pageSizeOptions"
+			[totalRecords]="dashboard.totalItems || 0"
+			[loading]="dashboard.loading || false"
+			(onLazyLoad)="requestPage($event)"
+			responsiveLayout="scroll">
+			<ng-template pTemplate="header">
+				<tr>
+					<th pSortableColumn="produto">
+						<div class="sales-table__heading">
+							Produto
+							<p-sortIcon field="produto"></p-sortIcon>
+						</div>
+						<p-columnFilter
+							type="text"
+							field="produto"
+							display="menu"
+							matchMode="contains"
+							[showMatchModes]="false"
+							[showOperator]="false"
+							[showAddButton]="false"></p-columnFilter>
+					</th>
+					<th>Data da venda</th>
+					<th pSortableColumn="quantidade">
+						<div class="sales-table__heading">
+							Quantidade vendida
+							<p-sortIcon field="quantidade"></p-sortIcon>
+						</div>
+						<p-columnFilter
+							type="numeric"
+							field="quantidade"
+							display="menu"
+							matchMode="equals"
+							[maxFractionDigits]="0"
+							[showMatchModes]="false"
+							[showOperator]="false"
+							[showAddButton]="false"></p-columnFilter>
+					</th>
+					<th>Preço total</th>
+					<th>Ações</th>
+				</tr>
+			</ng-template>
+			<ng-template
+				pTemplate="body"
+				let-product>
+				<tr>
+					<td>{{ product.produto }}</td>
+					<td>{{ product.dataVenda }}</td>
+					<td>{{ product.quantidade }}</td>
+					<td>{{ product.precoUnitario | currency: 'BRL' : 'symbol' : '1.2-2' }}</td>
+					<td>
+						<button
+							pButton
+							type="button"
+							class="sales-table__details-button p-button-text"
+							icon="pi pi-eye"
+							label="Detalhes"
+							(click)="selectProduct(product.produto)"></button>
+					</td>
+				</tr>
+			</ng-template>
+			<ng-template pTemplate="emptymessage">
+				<tr><td colspan="5">Nenhuma venda encontrada.</td></tr>
+			</ng-template>
+		</p-table>
+	</ng-container>
 </section>

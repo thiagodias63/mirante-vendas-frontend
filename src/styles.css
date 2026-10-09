@@ -1,64 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --space-xxs: 0.25rem;
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2rem;
-  --space-xl: 3rem;
-  --space-xxl: 6rem;
+	--space-xxs: 0.25rem;
+	--space-xs: 0.5rem;
+	--space-sm: 1rem;
+	--space-md: 1.5rem;
+	--space-lg: 2rem;
+	--space-xl: 3rem;
+	--space-xxl: 6rem;
 
-  --hue: 218;
-  --saturation: 90%;
-  --lightness: 50%;
+	--hue: 218;
+	--saturation: 90%;
+	--lightness: 50%;
 
-  --brand: hsl(var(--hue) calc(var(--saturation) / 2) var(--lightness));
+	--brand: hsl(var(--hue) calc(var(--saturation) / 2) var(--lightness));
 
-  --text1: hsl(var(--hue) 15% 85%);
-  --text2: hsl(var(--hue) 15% 65%);
+	--text1: hsl(var(--hue) 15% 85%);
+	--text2: hsl(var(--hue) 15% 65%);
 
-  --surface1: hsl(var(--hue) 10% 10%);
-  --surface2: hsl(var(--hue) 10% 15%);
-  --surface3: hsl(var(--hue) 5% 20%);
-  --surface4: hsl(var(--hue) 5% 25%);
+	--surface1: hsl(var(--hue) 10% 10%);
+	--surface2: hsl(var(--hue) 10% 15%);
+	--surface3: hsl(var(--hue) 5% 20%);
+	--surface4: hsl(var(--hue) 5% 25%);
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    --brand: hsl(var(--hue) var(--saturation) var(--lightness));
+	:root {
+		--brand: hsl(var(--hue) var(--saturation) var(--lightness));
 
-    --text1: hsl(var(--hue) var(--saturation) 10%);
+		--text1: hsl(var(--hue) var(--saturation) 10%);
 
-    --text2: hsl(var(--hue) calc(var(--saturation) / 2) 30%);
+		--text2: hsl(var(--hue) calc(var(--saturation) / 2) 30%);
 
-    --surface1: hsl(var(--hue) 20% 90%);
-    --surface2: hsl(var(--hue) 10% 99%);
-    --surface3: hsl(var(--hue) 10% 96%);
-    --surface4: hsl(var(--hue) 10% 85%);
-  }
+		--surface1: hsl(var(--hue) 20% 90%);
+		--surface2: hsl(var(--hue) 10% 99%);
+		--surface3: hsl(var(--hue) 10% 96%);
+		--surface4: hsl(var(--hue) 10% 85%);
+	}
 }
 * {
-  box-sizing: border-box;
-  margin: 0;
+	box-sizing: border-box;
+	margin: 0;
 }
 
 html {
-  block-size: 100%;
+	block-size: 100%;
 }
 
 body {
-  font-family: system-ui, sans-serif;
-  min-block-size: 100%;
-  /* padding-block-start: var(--space-xs);
-  padding-block-end: var(--space-xs); */
+	font-family: system-ui, sans-serif;
+	min-block-size: 100%;
+	background: var(--surface1);
+	color: var(--text1);
 }
 
 h1,
 h2,
 h3 {
-  font-weight: 500;
+	font-weight: 500;
 }
 
 small {
-  line-height: 1.5;
+	line-height: 1.5;
 }

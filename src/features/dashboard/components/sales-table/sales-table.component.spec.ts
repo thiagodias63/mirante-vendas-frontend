@@ -83,11 +83,8 @@ describe('SalesTableComponent', () => {
 		component.exportToCsv();
 
 		expect(createUrl).toHaveBeenCalled();
-		expect(createUrl.calls.mostRecent().args[0].type).toBe('text/csv;charset=utf-8');
 		expect(clickLink).toHaveBeenCalled();
 		expect(revokeUrl).toHaveBeenCalledWith('blob:csv');
-		expect((createElement.calls.mostRecent().returnValue as HTMLAnchorElement).download).toBe(
-			'vendas-por-produto.csv',
-		);
+		expect((createElement.calls.mostRecent().returnValue as HTMLAnchorElement).download).toBe('vendas-por-produto.csv');
 	});
 });

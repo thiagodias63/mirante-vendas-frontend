@@ -1,17 +1,15 @@
 :host {
-  display: block;
-  min-height: 100vh;
-  background: var(--surface1);
-  color: var(--text1);
+	display: block;
+	min-height: calc(100vh - 4rem);
 }
 .import-csv {
-  min-height: 100vh;
-  padding: var(--space-xxl) var(--space-md);
-  background: var(--surface1);
+	min-height: 100vh;
+	padding: var(--space-xxl) var(--space-md);
+	background: var(--surface1);
 }
 
 @media (max-width: 600px) {
-  .import-csv {
-    padding: var(--space-lg) var(--space-sm);
-  }
+	.import-csv {
+		padding: var(--space-lg) var(--space-sm);
+	}
 }

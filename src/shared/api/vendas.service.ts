@@ -46,10 +46,6 @@ export class VendasService {
 		return this.http.post<unknown>(this.endpoint, venda);
 	}
 
-	getOne(idVenda: number): Observable<Venda> {
-		return this.http.get<Venda>(`${this.endpoint}/${idVenda}`);
-	}
-
 	getAll(filters: GetAllVendasParams): Observable<VendaPage> {
 		let params = new HttpParams()
 			.set('_size', filters.size)
