@@ -37,6 +37,11 @@ describe('CurrencyBrPipe', () => {
 		expect(result).toBe('R$ 0,00');
 	});
 
+	it('should return "R$ 0,00" when value is not a number', () => {
+		const result = pipe.transform('valor inválido');
+		expect(result).toBe('R$ 0,00');
+	});
+
 	it('should return value with thounsand separator', () => {
 		const result = pipe.transform(15000000);
 		expect(result).toBe('R$ 150.000,00');

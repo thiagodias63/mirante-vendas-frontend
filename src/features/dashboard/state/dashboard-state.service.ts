@@ -36,7 +36,6 @@ export class DashboardStateService {
 	private orderDirection: 'asc' | 'desc' = 'asc';
 	private productFilter = '';
 	private quantityFilter: number | null = null;
-	private chartFilterSignature: string | null = null;
 	private readonly stateSubject = new BehaviorSubject<DashboardState>({
 		sales: [],
 		products: [],
@@ -118,19 +117,12 @@ export class DashboardStateService {
 	}
 
 	loadChartSales(): void {
-		const signature = `${this.productFilter.trim()}|${this.quantityFilter ?? ''}`;
-		if (signature === this.chartFilterSignature) return;
-		this.chartFilterSignature = signature;
-
 		const params: GetAllVendasParams = {
 			size: 100,
 			page: 0,
 			orderBy: 'produto',
 			orderDirection: 'asc',
 		};
-		const product = this.productFilter.trim();
-		if (product) params.Produto = `*${product}*`;
-		if (this.quantityFilter !== null) params.Quantidade = this.quantityFilter;
 
 		this.update({ ...this.state, chartLoading: true, chartErrorMessage: '' });
 		this.vendasService.getAll(params).subscribe({
@@ -141,7 +133,6 @@ export class DashboardStateService {
 					chartLoading: false,
 				}),
 			error: () => {
-				this.chartFilterSignature = null;
 				this.update({
 					...this.state,
 					chartProducts: [],
