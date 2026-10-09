@@ -1,0 +1,60 @@
+src/features/dashboard/components/product-details-dialog/product-details-dialog.component.html
+  s_9d107aee4cbcb6::t_5dac02c25c417a 2,4,8-44
+  s_0b887f4e9ce0c3::t_637827ee37606c 2,4,8-44
+src/features/dashboard/components/product-details-dialog/product-details-dialog.component.spec.ts
+  s_9d107aee4cbcb6::t_5dac02c25c417a 2,6,13,28-31,36,39-41,43,52-53,56-58,60-62,65-67,70,72-74
+  s_0b887f4e9ce0c3::t_637827ee37606c 2,6,13,28-31,36,39-41,43,52-53,56-58,60-62,65-67,70,72-74
+src/features/dashboard/components/product-details-dialog/product-details-dialog.component.ts
+  s_9d107aee4cbcb6::t_5dac02c25c417a 1-3,5-11,18-19,21-34,38,41-51
+  s_0b887f4e9ce0c3::t_637827ee37606c 1-3,5-11,18-19,21-34,38,41-51
+src/features/dashboard/pages/dashboard/dashboard.component.html
+  s_9d107aee4cbcb6::t_5dac02c25c417a 25
+  s_0b887f4e9ce0c3::t_637827ee37606c 25
+src/features/dashboard/pages/dashboard/dashboard.component.spec.ts
+  s_9d107aee4cbcb6::t_5dac02c25c417a 3-4,13,16-20,27-29,31,33-34,37,39
+  s_0b887f4e9ce0c3::t_637827ee37606c 3-4,13,16-20,27-29,31,33-34,37,39
+src/features/dashboard/pages/dashboard/dashboard.component.ts
+  s_9d107aee4cbcb6::t_5dac02c25c417a 13
+  s_0b887f4e9ce0c3::t_637827ee37606c 13
+src/features/dashboard/state/dashboard-state.service.spec.ts
+  s_9d107aee4cbcb6::t_5dac02c25c417a 44-55
+src/features/dashboard/state/dashboard-state.service.ts
+  s_9d107aee4cbcb6::t_5dac02c25c417a 46-47,55-62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "base_commit_sha": "4329bfdf10e7dd6e27975ef902f1f99ad6ad10c8",
+  "prompts": {},
+  "sessions": {
+    "s_9d107aee4cbcb6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11de3-fe54-7683-9dd7-9626bcef9882",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "thiago.diasbittencourt-ext@ab-inbev.com",
+      "custom_attributes": {
+        "input_tokens": "8102606",
+        "output_tokens": "50996",
+        "cache_read_input_tokens": "7815168",
+        "operation_input_tokens": "8102606",
+        "operation_output_tokens": "50996"
+      }
+    },
+    "s_0b887f4e9ce0c3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ca4-a5a0-7ca1-97e3-2a70bb08f2c5",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "thiago.diasbittencourt-ext@ab-inbev.com",
+      "custom_attributes": {
+        "input_tokens": "17572667",
+        "output_tokens": "139294",
+        "cache_read_input_tokens": "17071104",
+        "operation_input_tokens": "17572667",
+        "operation_output_tokens": "139294"
+      }
+    }
+  }
+}
