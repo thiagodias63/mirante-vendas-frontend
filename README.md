@@ -36,16 +36,10 @@ O Angular CLI usa a configuração de produção por padrão. Os arquivos gerado
 
 ## Testes unitários e cobertura
 
-Execute os testes em modo interativo:
+Execute os testes: (uma vez, sem watch, usando Chrome headless:)
 
 ```bash
 npm run test
-```
-
-Para executar uma vez, sem watch, usando Chrome headless:
-
-```bash
-npm run test -- --watch=false --browsers=ChromeHeadlessCI
 ```
 
 A configuração do projeto ativa a cobertura de código para os testes. O relatório HTML fica em `coverage/mirante-vendas-frontend/index.html`; o resumo também é exibido no terminal. Abra o relatório HTML no navegador para navegar pela cobertura por arquivo.

@@ -27,18 +27,23 @@ describe('SalesChartComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [SalesChartComponent],
 			imports: [CommonModule],
-			providers: [{ provide: DashboardStateService, useValue: { state$: state.asObservable() } }],
+			providers: [
+				{ provide: DashboardStateService, useValue: { state$: state.asObservable(), loadChartSales: jasmine.createSpy() } },
+			],
 			schemas: [NO_ERRORS_SCHEMA],
 		}).compileComponents();
 		fixture = TestBed.createComponent(SalesChartComponent);
 		component = fixture.componentInstance;
 	});
 
-	it('uses product-only summaries from the shared dashboard state', () => {
-		state.next({ ...state.value, chartProducts: [
-			{ produto: 'Camiseta', quantidade: 5 },
-			{ produto: 'Calça', quantidade: 1 },
-		] });
+	it('should uses product-only summaries from the shared dashboard state', () => {
+		state.next({
+			...state.value,
+			chartProducts: [
+				{ produto: 'Camiseta', quantidade: 5 },
+				{ produto: 'Calça', quantidade: 1 },
+			],
+		});
 
 		expect(component.products).toEqual(state.value.chartProducts);
 		expect(component.chartData.labels).toEqual(['Camiseta', 'Calça']);
@@ -52,7 +57,7 @@ describe('SalesChartComponent', () => {
 
 		state.next({ ...state.value, chartProducts: [], chartLoading: true });
 		fixture.detectChanges();
-		expect(fixture.nativeElement.textContent).toContain('Carregando dados do gráfico');
+		expect(fixture.nativeElement.textContent).toContain('Carregando dados');
 
 		state.next({ ...state.value, chartProducts: [], chartLoading: false });
 		fixture.detectChanges();

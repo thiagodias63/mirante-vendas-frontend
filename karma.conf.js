@@ -39,7 +39,7 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['ChromeHeadlessCI'],
-    singleRun: false,
+    singleRun: true,
     restartOnFileChange: true
   });
 };

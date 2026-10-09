@@ -74,11 +74,11 @@ describe('DashboardStateService', () => {
 		expect(stateService.state.loading).toBeFalse();
 	});
 
-	it('loads 500 records for the chart and aggregates quantities by product only', () => {
+	it('loads 100 records for the chart and aggregates quantities by product only', () => {
 		stateService.loadChartSales();
 
 		expect(vendasService.getAll).toHaveBeenCalledWith({
-			size: 500,
+			size: 100,
 			page: 0,
 			orderBy: 'produto',
 			orderDirection: 'asc',
