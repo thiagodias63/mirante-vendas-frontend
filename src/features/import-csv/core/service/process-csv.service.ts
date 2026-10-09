@@ -4,59 +4,40 @@ import { ProcessCsvWorkerResponse } from '../workers/csv-parser';
 
 const CSV_VENDAS_STORAGE_KEY = 'csv-vendas';
 
+/**
+ * Coordena a leitura e o processamento de arquivos CSV de vendas.
+ *
+ * Envia o arquivo para um Web Worker, persiste o resultado validado no
+ * armazenamento local e devolve as vendas processadas ao chamador.
+ */
 @Injectable()
 export class ProcessCsvService {
 	/**
-	 * Processa um arquivo CSV, orquestrando a leitura do arquivo,
-	 * o parsing em uma thread separada e o armazenamento em cache.
+	 * Processa um arquivo CSV e armazena as vendas resultantes no `localStorage`.
 	 *
-	 * @param file O arquivo CSV a ser processado.
-	 * @returns Uma Promise que resolve com a lista de vendas processadas.
+	 * @param file Arquivo CSV selecionado para processamento.
+	 * @returns Uma promessa com as vendas convertidas para o formato `CsvVenda`.
+	 * @throws Rejeita a promessa se o worker não puder iniciar, se a leitura ou
+	 * o processamento falhar, ou se não for possível persistir o resultado.
 	 */
 	async process(file: File): Promise<CsvVenda[]> {
-		const csvContent = await this.readFileAsText(file);
-		const parsedData = await this.parseCsvWithWorker(csvContent);
+		const parsedData = await this.parseCsvWithWorker(file);
 		this.saveToLocalStorage(parsedData);
-
 		return parsedData;
 	}
 
 	/**
-	 * Lê o conteúdo de um arquivo físico e o converte para texto.
+	 * Envia o arquivo ao worker e interpreta a resposta do processamento.
+	 * O worker é encerrado após responder ou emitir um erro.
 	 *
-	 * @param file O arquivo a ser lido.
-	 * @returns Uma Promise que resolve com o conteúdo do arquivo em formato de string.
-	 * @throws {Error} Se ocorrer uma falha na leitura ou se o arquivo for abortado.
+	 * @param file Arquivo CSV que será lido e processado pelo worker.
+	 * @returns Uma promessa com as vendas processadas pelo worker.
+	 * @throws Rejeita a promessa se o worker não iniciar, falhar ou retornar uma
+	 * resposta inválida ou com erro de processamento.
 	 */
-	private readFileAsText(file: File): Promise<string> {
-		return new Promise((resolve, reject) => {
-			const reader = new FileReader();
-
-			reader.onerror = () => reject(new Error('Não foi possível ler o arquivo CSV.'));
-			reader.onabort = () => reject(new Error('A leitura do arquivo CSV foi cancelada.'));
-			reader.onload = () => {
-				if (typeof reader.result !== 'string') {
-					reject(new Error('Não foi possível ler o conteúdo do arquivo CSV.'));
-					return;
-				}
-				resolve(reader.result);
-			};
-
-			reader.readAsText(file);
-		});
-	}
-
-	/**
-	 * Envia o conteúdo do CSV para um Web Worker processar sem travar a thread principal (UI).
-	 *
-	 * @param csvContent O conteúdo do arquivo CSV em texto.
-	 * @returns Uma Promise que resolve com os dados processados e tipados.
-	 * @throws {Error} Se o worker falhar ao iniciar, retornar erro ou emitir uma resposta em formato inválido.
-	 */
-	private parseCsvWithWorker(csvContent: string): Promise<CsvVenda[]> {
+	private parseCsvWithWorker(file: File): Promise<CsvVenda[]> {
 		return new Promise((resolve, reject) => {
 			let worker: Worker;
-
 			try {
 				worker = new Worker(new URL('../workers/process-csv.worker', import.meta.url), { type: 'module' });
 			} catch {
@@ -65,37 +46,31 @@ export class ProcessCsvService {
 			}
 
 			const finish = () => worker.terminate();
-
 			worker.onerror = () => {
 				finish();
 				reject(new Error('Ocorreu um erro ao processar o arquivo CSV.'));
 			};
-
 			worker.onmessage = ({ data }: MessageEvent<ProcessCsvWorkerResponse>) => {
 				finish();
-
 				if (!data || typeof data.success !== 'boolean') {
 					reject(new Error('Resposta inválida ao processar o arquivo CSV.'));
 					return;
 				}
-
 				if (!data.success) {
 					reject(new Error(data.error));
 					return;
 				}
-
 				resolve(data.data);
 			};
-
-			worker.postMessage(csvContent);
+			worker.postMessage(file);
 		});
 	}
 
 	/**
-	 * Salva a lista de vendas processadas no armazenamento local (localStorage) em formato JSON.
+	 * Persiste as vendas processadas no armazenamento local como JSON.
 	 *
-	 * @param data A lista de vendas a ser salva.
-	 * @throws {Error} Se houver falha de escrita (ex: cota excedida do navegador).
+	 * @param data Vendas retornadas pelo worker.
+	 * @throws Erro se a serialização ou a gravação no `localStorage` falhar.
 	 */
 	private saveToLocalStorage(data: CsvVenda[]): void {
 		try {

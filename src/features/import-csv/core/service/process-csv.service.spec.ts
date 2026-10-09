@@ -4,100 +4,67 @@ import { ProcessCsvService } from './process-csv.service';
 
 describe('ProcessCsvService', () => {
 	let service: ProcessCsvService;
-	let reader: FileReader;
 	let worker: Worker;
 	let workerConstructor: jasmine.Spy;
-	let readAsText: jasmine.Spy;
 	let postMessage: jasmine.Spy;
 	let terminate: jasmine.Spy;
-	let readerResult: string | ArrayBuffer | null;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({ providers: [ProcessCsvService] });
 		service = TestBed.inject(ProcessCsvService);
-		readAsText = jasmine.createSpy('readAsText');
-		readerResult = 'csv content';
-		reader = {
-			get result() {
-				return readerResult;
-			},
-			onload: null,
-			onerror: null,
-			onabort: null,
-			readAsText,
-		} as unknown as FileReader;
 		postMessage = jasmine.createSpy('postMessage');
 		terminate = jasmine.createSpy('terminate');
 		worker = { onmessage: null, onerror: null, postMessage, terminate } as unknown as Worker;
-		spyOn(window, 'FileReader').and.returnValue(reader);
 		workerConstructor = spyOn(window, 'Worker').and.returnValue(worker);
 		localStorage.clear();
 	});
 
-	function startAndLoad(): Promise<CsvVenda[]> {
-		const result = service.process(new File(['csv content'], 'sales.csv'));
-		(reader.onload as (() => void) | null)?.();
-		return result;
-	}
+	it('sends the File to a worker, stores parsed sales, and terminates the worker', async () => {
+		const file = new File(['csv content'], 'sales.csv');
+		const sales: CsvVenda[] = [{ id_venda: 7, produto: 'Camiseta', quantidade: 2, preco_unitario: 45, data_venda: '2026-10-08' }];
+		const result = service.process(file);
 
-	it('should reads the file, sends it to a worker, stores valid rows, and terminates the worker', async () => {
-		const sales: CsvVenda[] = [{ id_venda: 7, produto: 'Camiseta', quantidade: 2, preco_unitario: 45, data_venda: '08/10/2026' }];
-		const result = startAndLoad();
-		expect(readAsText).toHaveBeenCalled();
-		expect(postMessage).toHaveBeenCalledWith('csv content');
+		expect(workerConstructor).toHaveBeenCalled();
+		expect(postMessage).toHaveBeenCalledOnceWith(file);
 		(worker.onmessage as ((event: MessageEvent) => void) | null)?.({
 			data: { success: true, data: sales },
 		} as MessageEvent);
+
 		expect(await result).toEqual(sales);
 		expect(localStorage.getItem('csv-vendas')).toBe(JSON.stringify(sales));
 		expect(terminate).toHaveBeenCalled();
 	});
 
-	it('should rejects file read errors and aborts', async () => {
-		const readError = service.process(new File(['csv'], 'sales.csv'));
-		(reader.onerror as (() => void) | null)?.();
-		await expectAsync(readError).toBeRejected();
-		const aborted = service.process(new File(['csv'], 'sales.csv'));
-		(reader.onabort as (() => void) | null)?.();
-		await expectAsync(aborted).toBeRejected();
-	});
-
-	it('should rejects when the reader result is not text or the worker cannot start', async () => {
-		const emptyResult = service.process(new File(['csv'], 'sales.csv'));
-		readerResult = null;
-		(reader.onload as (() => void) | null)?.();
-		await expectAsync(emptyResult).toBeRejected();
-
-		readerResult = 'csv content';
+	it('rejects when the worker cannot start', async () => {
 		workerConstructor.and.throwError('Worker unavailable');
-		const workerStartError = service.process(new File(['csv'], 'sales.csv'));
-		(reader.onload as (() => void) | null)?.();
-		await expectAsync(workerStartError).toBeRejected();
+
+		await expectAsync(service.process(new File(['csv'], 'sales.csv')))
+			.toBeRejectedWithError('Não foi possível iniciar o processamento do CSV.');
 	});
 
-	it('should rejects invalid worker responses and parsing errors', async () => {
-		const invalid = startAndLoad();
+	it('rejects invalid worker responses and parsing errors', async () => {
+		const invalid = service.process(new File(['csv'], 'sales.csv'));
 		(worker.onmessage as ((event: MessageEvent) => void) | null)?.({
 			data: { success: false, error: 'invalid header' },
 		} as MessageEvent);
 		await expectAsync(invalid).toBeRejectedWithError('invalid header');
 
-		const malformed = startAndLoad();
+		const malformed = service.process(new File(['csv'], 'sales.csv'));
 		(worker.onmessage as ((event: MessageEvent) => void) | null)?.({ data: null } as MessageEvent);
-		await expectAsync(malformed).toBeRejected();
+		await expectAsync(malformed).toBeRejectedWithError('Resposta inválida ao processar o arquivo CSV.');
 	});
 
-	it('should rejects worker runtime errors and local storage failures', async () => {
-		const workerError = startAndLoad();
+	it('rejects worker runtime errors and local storage failures', async () => {
+		const workerError = service.process(new File(['csv'], 'sales.csv'));
 		(worker.onerror as ((event: ErrorEvent) => void) | null)?.(new ErrorEvent('error'));
-		await expectAsync(workerError).toBeRejected();
+		await expectAsync(workerError).toBeRejectedWithError('Ocorreu um erro ao processar o arquivo CSV.');
 		expect(terminate).toHaveBeenCalled();
 
 		spyOn(Storage.prototype, 'setItem').and.throwError('storage unavailable');
-		const storageError = startAndLoad();
+		const storageError = service.process(new File(['csv'], 'sales.csv'));
 		(worker.onmessage as ((event: MessageEvent) => void) | null)?.({
 			data: { success: true, data: [] },
 		} as MessageEvent);
-		await expectAsync(storageError).toBeRejected();
+		await expectAsync(storageError).toBeRejectedWithError('Não foi possível salvar os dados do CSV no armazenamento local.');
 	});
 });
