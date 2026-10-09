@@ -1,0 +1,51 @@
+src/features/import-csv/core/service/process-csv.service.spec.ts
+  s_9d107aee4cbcb6::t_021429fe5470aa 22-25,27-28,32,38,40-42,45-46,52,54,57-58,60,64,68
+  s_0b887f4e9ce0c3::t_42d55b32e86dac 22-25,27-28,32,38,40-42,45-46,52,54,57-58,60,64,68
+src/features/import-csv/core/service/process-csv.service.ts
+  s_9d107aee4cbcb6::t_021429fe5470aa 7-12,16,18-21,24,30-31,33-36,38,65,70,72-73
+  s_0b887f4e9ce0c3::t_42d55b32e86dac 7-12,16,18-21,24,30-31,33-36,38,65,70,72-73
+src/features/import-csv/core/workers/csv-file-reader.spec.ts
+  s_9d107aee4cbcb6::t_021429fe5470aa 1-53
+src/features/import-csv/core/workers/csv-file-reader.ts
+  s_9d107aee4cbcb6::t_021429fe5470aa 1-27
+src/features/import-csv/core/workers/process-csv.worker.ts
+  s_9d107aee4cbcb6::t_021429fe5470aa 1-2,4-14
+  s_0b887f4e9ce0c3::t_42d55b32e86dac 1-2,4-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "base_commit_sha": "94df6abe5c15b03716cea138aa5a999949fc71be",
+  "prompts": {},
+  "sessions": {
+    "s_9d107aee4cbcb6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11de3-fe54-7683-9dd7-9626bcef9882",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "thiago.diasbittencourt-ext@ab-inbev.com",
+      "custom_attributes": {
+        "input_tokens": "13070957",
+        "output_tokens": "73815",
+        "cache_read_input_tokens": "12575744",
+        "operation_input_tokens": "13070957",
+        "operation_output_tokens": "73815"
+      }
+    },
+    "s_0b887f4e9ce0c3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ca4-a5a0-7ca1-97e3-2a70bb08f2c5",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "thiago.diasbittencourt-ext@ab-inbev.com",
+      "custom_attributes": {
+        "input_tokens": "17572667",
+        "output_tokens": "139294",
+        "cache_read_input_tokens": "17071104",
+        "operation_input_tokens": "17572667",
+        "operation_output_tokens": "139294"
+      }
+    }
+  }
+}
