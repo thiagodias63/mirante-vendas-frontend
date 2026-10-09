@@ -9,7 +9,7 @@ import { VendasService } from 'src/shared/api/vendas.service';
 export class ProcessDataSimultaneously implements ProcessData {
 	constructor(private readonly vendaService: VendasService) {}
 
-	send(data: CsvVenda[]): Observable<unknown> {
+	send(data: CsvVenda[]): Observable<void> {
 		return from(data).pipe(mergeMap((venda) => this.vendaService.create(venda)));
 	}
 }

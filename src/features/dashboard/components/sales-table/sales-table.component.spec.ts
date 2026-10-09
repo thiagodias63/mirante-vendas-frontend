@@ -69,7 +69,7 @@ describe('SalesTableComponent', () => {
 		component.dashboardState.loadSales();
 
 		const csv = (component as any).buildCsvContent() as string;
-		expect(csv).toContain('Produto;Data da venda;Quantidade vendida;Pre\u00e7o unit\u00e1rio somado');
+		expect(csv).toContain('Produto;Data da venda;Quantidade vendida;Preço total');
 		expect(csv).toContain('Camiseta;;5;20');
 		expect(csv).toContain('1;5');
 	});

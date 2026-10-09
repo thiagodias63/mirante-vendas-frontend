@@ -10,22 +10,26 @@ const EXPECTED_HEADER = ['id_venda', 'produto', 'quantidade', 'preco_unitario', 
  * Garante que a string corresponda ao formato esperado e represente
  * uma data válida no calendário (ex.: rejeita dias/meses inexistentes como 31/02/2023).
  *
- * @param {string} value - A string contendo a data a ser processada.
- * @returns {string} A string da data higienizada (sem espaços adicionais nas pontas).
+ * @param value A string contendo a data a ser processada.
+ * @returns A string da data no padrão ISO UTC com o horário zerado (ex: 2026-10-08T00:00:00.000Z).
  * @throws {Error} Se o formato for diferente de DD/MM/AAAA ou se a data for inexistente no calendário.
  */
 function parseDate(value: string): string {
 	const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value.trim());
-	if (!match) throw new Error('data_venda inv\u00e1lida. Use DD/MM/AAAA.');
+	if (!match) throw new Error('data_venda inválida. Use DD/MM/AAAA.');
+
 	const day = Number(match[1]);
 	const month = Number(match[2]);
 	const year = Number(match[3]);
+
 	const date = new Date(Date.UTC(year, month - 1, day));
 	if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) {
-		throw new Error('data_venda inv\u00e1lida.');
+		throw new Error('data_venda inválida.');
 	}
-	return value.trim();
+
+	return date.toISOString();
 }
+
 /**
  * Remove caracteres BOM, divide o conteúdo em linhas e remove linhas vazias ao final.
  *
@@ -110,11 +114,10 @@ function parseCsvRow(line: string, lineNumber: number): CsvVenda {
 		const date = parseDate(columns[4]);
 
 		return {
-			id_venda: id,
 			produto: columns[1],
 			quantidade: quantity,
-			preco_unitario: price,
-			data_venda: date,
+			precoUnitario: price * 100,
+			dataVenda: date,
 		};
 	} catch (error) {
 		const message = error instanceof Error ? error.message : 'registro inválido.';
@@ -157,7 +160,7 @@ export function processCsvWorkerMessage(content: string): ProcessCsvWorkerRespon
 	} catch (error) {
 		return {
 			success: false,
-			error: error instanceof Error ? error.message : 'N\u00e3o foi poss\u00edvel processar o CSV.',
+			error: error instanceof Error ? error.message : 'Não foi possível processar o CSV.',
 		};
 	}
 }

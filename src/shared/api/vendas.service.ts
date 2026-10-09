@@ -4,11 +4,10 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface CreateVendaRequest {
-	id_venda: number;
 	produto: string;
 	quantidade: number;
-	preco_unitario: number;
-	data_venda: Date | string;
+	precoUnitario: number;
+	dataVenda: Date | string;
 }
 
 export interface Venda {
@@ -42,8 +41,8 @@ export class VendasService {
 
 	constructor(private readonly http: HttpClient) {}
 
-	create(venda: CreateVendaRequest): Observable<unknown> {
-		return this.http.post<unknown>(this.endpoint, venda);
+	create(venda: CreateVendaRequest): Observable<void> {
+		return this.http.post<void>(this.endpoint, venda);
 	}
 
 	getAll(filters: GetAllVendasParams): Observable<VendaPage> {

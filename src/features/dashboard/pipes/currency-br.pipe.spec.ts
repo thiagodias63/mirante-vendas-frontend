@@ -1,10 +1,10 @@
-import { CurrencyBrCurrencyPipe } from './currency-br.pipe';
+import { CurrencyBrPipe } from './currency-br.pipe';
 
-describe('CurrencyBrCurrencyPipe', () => {
-	let pipe: CurrencyBrCurrencyPipe;
+describe('CurrencyBrPipe', () => {
+	let pipe: CurrencyBrPipe;
 
 	beforeEach(() => {
-		pipe = new CurrencyBrCurrencyPipe();
+		pipe = new CurrencyBrPipe();
 	});
 
 	it('should return "R$ 0,00" when value is an empty string', () => {

@@ -10,9 +10,10 @@ import { ProductDetailsDialogComponent } from './components/product-details-dial
 import { SalesTableComponent } from './components/sales-table/sales-table.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DashboardStateService } from './state/dashboard-state.service';
+import { CurrencyBrPipe } from './pipes/currency-br.pipe';
 
 @NgModule({
-	declarations: [DashboardComponent, SalesTableComponent, SalesChartComponent, ProductDetailsDialogComponent],
+	declarations: [DashboardComponent, SalesTableComponent, SalesChartComponent, ProductDetailsDialogComponent, CurrencyBrPipe],
 	imports: [
 		CommonModule,
 		ButtonModule,

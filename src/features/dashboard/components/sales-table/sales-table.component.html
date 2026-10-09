@@ -39,21 +39,7 @@
 							[showAddButton]="false"></p-columnFilter>
 					</th>
 					<th>Data da venda</th>
-					<th pSortableColumn="quantidade">
-						<div class="sales-table__heading">
-							Quantidade vendida
-							<p-sortIcon field="quantidade"></p-sortIcon>
-						</div>
-						<p-columnFilter
-							type="numeric"
-							field="quantidade"
-							display="menu"
-							matchMode="equals"
-							[maxFractionDigits]="0"
-							[showMatchModes]="false"
-							[showOperator]="false"
-							[showAddButton]="false"></p-columnFilter>
-					</th>
+					<th>Quantidade vendida</th>
 					<th>Preço total</th>
 					<th>Ações</th>
 				</tr>
@@ -63,9 +49,9 @@
 				let-product>
 				<tr>
 					<td>{{ product.produto }}</td>
-					<td>{{ product.dataVenda }}</td>
+					<td>{{ product.dataVenda | date: 'dd/MM/yyyy' }}</td>
 					<td>{{ product.quantidade }}</td>
-					<td>{{ product.precoUnitario | currency: 'BRL' : 'symbol' : '1.2-2' }}</td>
+					<td>{{ product.precoUnitario | currencyBr }}</td>
 					<td>
 						<button
 							pButton

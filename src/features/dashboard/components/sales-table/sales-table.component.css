@@ -1,6 +1,6 @@
 .sales-table {
-	margin-top: 1.25rem;
-	padding: 1.25rem;
+	margin-top: var(--space-md);
+	padding: var(--space-md);
 	border: 1px solid var(--surface4);
 	border-radius: var(--space-sm);
 	background: var(--surface2);
@@ -8,15 +8,15 @@
 }
 
 .sales-table__heading {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
-	gap: 0.35rem;
+	gap: var(--space-xs);
 }
 
 .sales-table__toolbar {
 	display: flex;
 	justify-content: flex-end;
-	margin-bottom: 0.75rem;
+	margin-bottom: var(--space-sm);
 }
 
 .sales-table__details-button {
@@ -25,6 +25,6 @@
 
 @media (max-width: 640px) {
 	.sales-table {
-		padding: 0.9rem;
+		padding: var(--space-xxs);
 	}
 }

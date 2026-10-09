@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 	name: 'currencyBr',
 	pure: true,
 })
-export class CurrencyBrCurrencyPipe implements PipeTransform {
+export class CurrencyBrPipe implements PipeTransform {
 	transform(value: number | string): string {
 		if (!value) {
 			value = 0;

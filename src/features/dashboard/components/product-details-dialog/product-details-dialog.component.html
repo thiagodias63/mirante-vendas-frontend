@@ -6,10 +6,15 @@
 	[style]="{ width: 'min(56rem, 95vw)' }"
 	[maximizable]="true">
 	<ng-container *ngIf="sales$ | async as detailsState">
-		<p *ngIf="detailsState.loading" class="product-details-dialog__status">
+		<p
+			*ngIf="detailsState.loading"
+			class="product-details-dialog__status">
 			Carregando ocorr&ecirc;ncias...
 		</p>
-		<p *ngIf="detailsState.errorMessage" class="product-details-dialog__error" role="alert">
+		<p
+			*ngIf="detailsState.errorMessage"
+			class="product-details-dialog__error"
+			role="alert">
 			{{ detailsState.errorMessage }}
 		</p>
 		<p-table
@@ -28,13 +33,15 @@
 					<th>Data da venda</th>
 				</tr>
 			</ng-template>
-			<ng-template pTemplate="body" let-sale>
+			<ng-template
+				pTemplate="body"
+				let-sale>
 				<tr>
 					<td>{{ sale.idVenda }}</td>
 					<td>{{ sale.produto }}</td>
 					<td>{{ sale.quantidade }}</td>
-					<td>{{ sale.precoUnitario | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</td>
-					<td>{{ sale.dataVenda | date: 'dd/MM/yyyy HH:mm' }}</td>
+					<td>{{ sale.precoUnitario | currencyBr }}</td>
+					<td>{{ sale.dataVenda | date: 'dd/MM/yyyy' }}</td>
 				</tr>
 			</ng-template>
 			<ng-template pTemplate="emptymessage">

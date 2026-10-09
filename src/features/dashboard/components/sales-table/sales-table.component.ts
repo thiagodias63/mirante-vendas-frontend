@@ -13,6 +13,7 @@ export class SalesTableComponent {
 	constructor(readonly dashboardState: DashboardStateService) {}
 
 	requestPage(event: LazyLoadEvent): void {
+		console.log('event', event);
 		this.dashboardState.loadSales(event);
 	}
 
@@ -38,7 +39,7 @@ export class SalesTableComponent {
 
 	private buildCsvContent(): string {
 		const rows = [
-			['Produto', 'Data da venda', 'Quantidade vendida', 'Preço unitário somado'],
+			['Produto', 'Data da venda', 'Quantidade vendida', 'Preço total'],
 			...this.dashboardState.state.products.map((product) => [
 				product.produto,
 				product.dataVenda,
