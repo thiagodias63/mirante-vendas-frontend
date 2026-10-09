@@ -19,7 +19,7 @@ export class SalesChartComponent {
 		responsive: true,
 		plugins: { legend: { display: false } },
 		scales: {
-				x: { title: { display: true, text: 'Produto' } },
+			x: { title: { display: true, text: 'Produto' } },
 			y: {
 				beginAtZero: true,
 				title: { display: true, text: 'Quantidade vendida' },
@@ -35,11 +35,13 @@ export class SalesChartComponent {
 			this.errorMessage = chartErrorMessage;
 			this.chartData = {
 				labels: this.products.map((product) => product.produto),
-				datasets: [{
-					label: 'Quantidade vendida',
-					data: this.products.map((product) => product.quantidade),
-					backgroundColor: '#3b82f6',
-				}],
+				datasets: [
+					{
+						label: 'Quantidade vendida',
+						data: this.products.map((product) => product.quantidade),
+						backgroundColor: '#3b82f6',
+					},
+				],
 			};
 		});
 	}

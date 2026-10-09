@@ -17,11 +17,10 @@ describe('VendasService', () => {
 
 	it('should posts a sale to the vendas endpoint', () => {
 		const sale = {
-			id_venda: 3,
 			produto: 'Tênis',
 			quantidade: 2,
-			preco_unitario: 99.9,
-			data_venda: '2026-10-08',
+			precoUnitario: 99.9,
+			dataVenda: '2026-10-08',
 		};
 		let result: unknown;
 		service.create(sale).subscribe((response) => (result = response));
@@ -40,7 +39,7 @@ describe('VendasService', () => {
 			.getAll({
 				size: 25,
 				page: 0,
-				orderBy: 'data_venda',
+				orderBy: 'dataVenda',
 				orderDirection: 'desc',
 				Produto: '*tenis*',
 				Quantidade: 2,
@@ -52,7 +51,7 @@ describe('VendasService', () => {
 		expect(request.request.method).toBe('GET');
 		expect(request.request.params.get('_size')).toBe('25');
 		expect(request.request.params.get('_page')).toBe('0');
-		expect(request.request.params.get('_order')).toBe('data_venda desc');
+		expect(request.request.params.get('_order')).toBe('dataVenda desc');
 		expect(request.request.params.get('Produto')).toBe('*tenis*');
 		expect(request.request.params.get('Quantidade')).toBe('2');
 		expect(request.request.params.get('DataVenda')).toBe('2026-10-08');

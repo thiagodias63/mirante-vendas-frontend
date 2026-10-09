@@ -2,38 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-
-export interface CreateVendaRequest {
-	produto: string;
-	quantidade: number;
-	precoUnitario: number;
-	dataVenda: Date | string;
-}
-
-export interface Venda {
-	idVenda: number;
-	produto: string;
-	quantidade: number;
-	precoUnitario: number;
-	dataVenda: string;
-}
-
-export interface VendaPage {
-	data: Venda[];
-	page: number;
-	size: number;
-	totalItems: number;
-}
-
-export interface GetAllVendasParams {
-	size: number;
-	page: number;
-	orderBy: 'idVenda' | 'produto' | 'quantidade' | 'data_venda';
-	orderDirection: 'asc' | 'desc';
-	Produto?: string;
-	Quantidade?: number;
-	DataVenda?: string;
-}
+import { VendasPaginated } from '../core/interfaces/vendas-paginated';
+import { GetAllVendasParams } from '../core/interfaces/get-all-vendas-params';
+import { CreateVendaRequest } from '../core/interfaces/create-venda-request';
 
 @Injectable({ providedIn: 'root' })
 export class VendasService {
@@ -45,7 +16,7 @@ export class VendasService {
 		return this.http.post<void>(this.endpoint, venda);
 	}
 
-	getAll(filters: GetAllVendasParams): Observable<VendaPage> {
+	getAll(filters: GetAllVendasParams): Observable<VendasPaginated> {
 		let params = new HttpParams()
 			.set('_size', filters.size)
 			.set('_page', filters.page)
@@ -55,6 +26,6 @@ export class VendasService {
 		if (filters.Quantidade) params = params.set('Quantidade', filters.Quantidade);
 		if (filters.DataVenda) params = params.set('DataVenda', filters.DataVenda);
 
-		return this.http.get<VendaPage>(this.endpoint, { params });
+		return this.http.get<VendasPaginated>(this.endpoint, { params });
 	}
 }
