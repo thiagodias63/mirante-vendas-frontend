@@ -1,0 +1,25 @@
+src/features/dashboard/pipes/currency-br.pipe.spec.ts
+  s_9d107aee4cbcb6::t_7468163da84506 40-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "base_commit_sha": "0b0b7ac91b573e1e7ddf17efe52612cf0d48a7a9",
+  "prompts": {},
+  "sessions": {
+    "s_9d107aee4cbcb6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11de3-fe54-7683-9dd7-9626bcef9882",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "thiago.diasbittencourt-ext@ab-inbev.com",
+      "custom_attributes": {
+        "input_tokens": "17064434",
+        "output_tokens": "91327",
+        "cache_read_input_tokens": "16279296",
+        "operation_input_tokens": "17064434",
+        "operation_output_tokens": "91327"
+      }
+    }
+  }
+}
