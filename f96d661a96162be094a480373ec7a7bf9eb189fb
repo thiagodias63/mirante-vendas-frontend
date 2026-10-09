@@ -1,0 +1,42 @@
+src/features/dashboard/state/dashboard-state.service.spec.ts
+  s_9d107aee4cbcb6::t_cdb3c349048721 120-139
+src/features/dashboard/state/dashboard-state.service.ts
+  s_9d107aee4cbcb6::t_cdb3c349048721 116-117,123-138
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "base_commit_sha": "040fc545f310b321e236376328d209baf3489ae3",
+  "prompts": {},
+  "sessions": {
+    "s_9d107aee4cbcb6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11de3-fe54-7683-9dd7-9626bcef9882",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "thiago.diasbittencourt-ext@ab-inbev.com",
+      "custom_attributes": {
+        "input_tokens": "9364506",
+        "output_tokens": "55643",
+        "cache_read_input_tokens": "8925952",
+        "operation_input_tokens": "9364506",
+        "operation_output_tokens": "55643"
+      }
+    },
+    "s_0b887f4e9ce0c3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ca4-a5a0-7ca1-97e3-2a70bb08f2c5",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "thiago.diasbittencourt-ext@ab-inbev.com",
+      "custom_attributes": {
+        "input_tokens": "17572667",
+        "output_tokens": "139294",
+        "cache_read_input_tokens": "17071104",
+        "operation_input_tokens": "17572667",
+        "operation_output_tokens": "139294"
+      }
+    }
+  }
+}
