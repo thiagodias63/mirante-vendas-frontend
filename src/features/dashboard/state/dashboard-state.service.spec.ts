@@ -41,6 +41,18 @@ describe('DashboardStateService', () => {
 		});
 	});
 
+	it('publishes the selected product separately from the dashboard data state', () => {
+		const selectedProducts: Array<string | null> = [];
+		stateService.selectedProduct$.subscribe((product) => selectedProducts.push(product));
+
+		stateService.openProductDetails('Camisa');
+		stateService.closeProductDetails();
+
+		expect(selectedProducts).toEqual([null, 'Camisa', null]);
+		expect(Object.prototype.hasOwnProperty.call(stateService.state, 'selectedProduct')).toBeFalse();
+		expect(Object.prototype.hasOwnProperty.call(stateService.state, 'detailsVisible')).toBeFalse();
+	});
+
 	it('loads backend sales and sums quantity and unit price by product and day', () => {
 		stateService.loadSales();
 

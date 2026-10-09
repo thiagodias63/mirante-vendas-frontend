@@ -1,63 +1,53 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { firstValueFrom, forkJoin } from 'rxjs';
+import { Component } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { Venda, VendasService } from 'src/shared/api/vendas.service';
+import { DashboardStateService } from '../../state/dashboard-state.service';
+
+interface ProductDetailsViewState {
+	sales: Venda[];
+	loading: boolean;
+	errorMessage: string;
+}
 
 @Component({
 	selector: 'app-product-details-dialog',
 	templateUrl: './product-details-dialog.component.html',
 	styleUrls: ['./product-details-dialog.component.css'],
 })
-export class ProductDetailsDialogComponent implements OnChanges {
-	@Input() visible = false;
-	@Input() product = '';
-	@Output() readonly visibleChange = new EventEmitter<boolean>();
+export class ProductDetailsDialogComponent {
+	readonly sales$: Observable<ProductDetailsViewState>;
 
-	details: Venda[] = [];
-	loading = false;
-	errorMessage = '';
-
-	constructor(private readonly vendasService: VendasService) {}
-
-	ngOnChanges(changes: SimpleChanges): void {
-		const opened = changes['visible']?.currentValue === true;
-		const productChanged = changes['product'] !== undefined;
-		if (this.visible && (opened || productChanged)) void this.loadProduct();
+	constructor(
+		private readonly vendasService: VendasService,
+		readonly dashboardState: DashboardStateService,
+	) {
+		this.sales$ = this.dashboardState.selectedProduct$.pipe(
+			switchMap((product) => {
+				if (product === null) return of({ sales: [], loading: false, errorMessage: '' });
+				return this.loadProductSales$(product).pipe(
+					map((sales) => ({ sales, loading: false, errorMessage: '' })),
+					startWith({ sales: [], loading: true, errorMessage: '' }),
+					catchError(() => of({ sales: [], loading: false, errorMessage: 'Could not load this product sales.' })),
+				);
+			}),
+		);
 	}
 
 	setVisible(visible: boolean): void {
-		this.visibleChange.emit(visible);
+		if (!visible) this.dashboardState.closeProductDetails();
 	}
 
-	async loadProduct(): Promise<void> {
-		if (!this.product) return;
-		this.details = [];
-		this.errorMessage = '';
-		this.loading = true;
-
-		try {
-			const matchingSales: Venda[] = [];
-			const pageSize = 100;
-			let page = 0;
-			let totalItems = 0;
-			do {
-				const response = await firstValueFrom(
-					this.vendasService.getAll({
-						size: pageSize,
-						page,
-						orderBy: 'idVenda',
-						orderDirection: 'asc',
-						Produto: `*${this.product}*`,
-					}),
-				);
-				matchingSales.push(...response.data.filter((sale) => sale.produto === this.product));
-				totalItems = response.totalItems;
-				if (!response.data.length) break;
-				page++;
-			} while (page * pageSize < totalItems);
-		} catch {
-			this.errorMessage = 'Could not load this product sales.';
-		} finally {
-			this.loading = false;
-		}
+	private loadProductSales$(product: string): Observable<Venda[]> {
+		const pageSize = 100;
+		return this.vendasService
+			.getAll({
+				size: pageSize,
+				page: 0,
+				orderBy: 'idVenda',
+				orderDirection: 'asc',
+				Produto: `*${product}*`,
+			})
+			.pipe(map((response) => response.data.filter((sale) => sale.produto === product)));
 	}
 }

@@ -43,12 +43,22 @@ export class DashboardStateService {
 		errorMessage: '',
 	});
 	readonly state$ = this.stateSubject.asObservable();
+	private readonly selectedProductSubject = new BehaviorSubject<string | null>(null);
+	readonly selectedProduct$ = this.selectedProductSubject.asObservable();
 
 	get state(): DashboardState {
 		return this.stateSubject.value;
 	}
 
 	constructor(private readonly vendasService: VendasService) {}
+
+	openProductDetails(product: string): void {
+		this.selectedProductSubject.next(product);
+	}
+
+	closeProductDetails(): void {
+		this.selectedProductSubject.next(null);
+	}
 
 	loadSales(event?: LazyLoadEvent): void {
 		const current = this.state;

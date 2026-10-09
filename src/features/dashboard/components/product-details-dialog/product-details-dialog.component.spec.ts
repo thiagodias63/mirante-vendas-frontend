@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { Venda, VendaPage, VendasService } from 'src/shared/api/vendas.service';
+import { DashboardStateService } from '../../state/dashboard-state.service';
 import { ProductDetailsDialogComponent } from './product-details-dialog.component';
 
 describe('ProductDetailsDialogComponent', () => {
 	let fixture: ComponentFixture<ProductDetailsDialogComponent>;
 	let component: ProductDetailsDialogComponent;
 	let vendas: jasmine.SpyObj<VendasService>;
+	let dashboardState: DashboardStateService;
 
 	const sales: Venda[] = [
 		{ idVenda: 1, produto: 'Camiseta', quantidade: 2, precoUnitario: 10, dataVenda: '2026-10-08T10:00:00Z' },
@@ -23,17 +25,22 @@ describe('ProductDetailsDialogComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [ProductDetailsDialogComponent],
 			imports: [CommonModule],
-			providers: [{ provide: VendasService, useValue: vendas }],
+			providers: [
+				{ provide: VendasService, useValue: vendas },
+				DashboardStateService,
+			],
 			schemas: [NO_ERRORS_SCHEMA],
 		}).compileComponents();
 		fixture = TestBed.createComponent(ProductDetailsDialogComponent);
 		component = fixture.componentInstance;
+		dashboardState = TestBed.inject(DashboardStateService);
 	});
 
-	it('loads a product occurrence list and fetches each exact sale by id', async () => {
-		component.product = 'Camiseta';
+	it('loads exact product sales when the selected product changes', () => {
+		let current: { sales: Venda[]; loading: boolean; errorMessage: string } | undefined;
+		component.sales$.subscribe((state) => current = state);
 
-		await component.loadProduct();
+		dashboardState.openProductDetails('Camiseta');
 
 		expect(vendas.getAll).toHaveBeenCalledWith({
 			size: 100,
@@ -42,40 +49,28 @@ describe('ProductDetailsDialogComponent', () => {
 			orderDirection: 'asc',
 			Produto: '*Camiseta*',
 		});
-		expect(component.details.map((sale) => sale.idVenda)).toEqual([1, 2]);
-		expect(component.loading).toBeFalse();
+		expect(current?.sales.map((sale) => sale.idVenda)).toEqual([1, 2]);
+		expect(current?.loading).toBeFalse();
 	});
 
-	it('loads details when the dialog opens for a product', () => {
-		spyOn(component, 'loadProduct');
-		component.visible = true;
-		component.product = 'Camiseta';
-
-		component.ngOnChanges({
-			visible: new SimpleChange(false, true, true),
-			product: new SimpleChange('', 'Camiseta', true),
-		});
-
-		expect(component.loadProduct).toHaveBeenCalled();
-	});
-
-	it('shows an error and clears the loading state when a detail request fails', async () => {
-		vendas.getAll.and.returnValue(throwError(() => new Error('backend unavailable')));
-		component.product = 'Camiseta';
-
-		await component.loadProduct();
-
-		expect(component.errorMessage).toBeTruthy();
-		expect(component.loading).toBeFalse();
-	});
-
-	it('emits visibility changes requested by PrimeNG dialog', () => {
-		const listener = jasmine.createSpy('visibleChange listener');
-		component.visibleChange.subscribe(listener);
-
+	it('closes the dialog by clearing the selected product', () => {
+		dashboardState.openProductDetails('Camiseta');
 		component.setVisible(false);
 
-		expect(component.visible).toBeFalse();
-		expect(listener).toHaveBeenCalledOnceWith(false);
+		let selectedProduct: string | null | undefined;
+		dashboardState.selectedProduct$.subscribe((product) => selectedProduct = product);
+		expect(selectedProduct).toBeNull();
+	});
+
+	it('emits an error state when a product sales request fails', () => {
+		let current: { sales: Venda[]; loading: boolean; errorMessage: string } | undefined;
+		component.sales$.subscribe((state) => current = state);
+		vendas.getAll.and.returnValue(throwError(() => new Error('backend unavailable')));
+
+		dashboardState.openProductDetails('Camiseta');
+
+		expect(current?.sales).toEqual([]);
+		expect(current?.errorMessage).toBeTruthy();
+		expect(current?.loading).toBeFalse();
 	});
 });
