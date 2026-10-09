@@ -16,9 +16,10 @@ describe('AppComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('creates the root component and renders the router outlet', () => {
+	it('should creates the root component and renders the router outlet', () => {
 		expect(fixture.componentInstance).toBeTruthy();
 		expect(fixture.nativeElement.querySelector('router-outlet')).toBeTruthy();
-		expect(fixture.nativeElement.querySelector('menu-header')).toBeTruthy();
+		expect(fixture.nativeElement.querySelector('app-menu-header')).toBeTruthy();
+		expect(fixture.nativeElement.querySelector('app-toast')).toBeTruthy();
 	});
 });

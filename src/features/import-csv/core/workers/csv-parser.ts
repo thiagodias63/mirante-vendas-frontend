@@ -3,7 +3,6 @@ import { CsvVenda } from '../interfaces/csv-venda';
 export type ProcessCsvWorkerResponse = { success: true; data: CsvVenda[] } | { success: false; error: string };
 
 const EXPECTED_HEADER = ['id_venda', 'produto', 'quantidade', 'preco_unitario', 'data_venda'];
-
 /**
  * Converte e valida uma string de data no formato DD/MM/AAAA.
  *
@@ -11,25 +10,28 @@ const EXPECTED_HEADER = ['id_venda', 'produto', 'quantidade', 'preco_unitario', 
  * uma data válida no calendário (ex.: rejeita dias/meses inexistentes como 31/02/2023).
  *
  * @param value A string contendo a data a ser processada.
- * @returns A string da data no padrão ISO UTC com o horário zerado (ex: 2026-10-08T00:00:00.000Z).
+ * @returns A string da data formatada no padrão YYYY-MM-DD.
  * @throws {Error} Se o formato for diferente de DD/MM/AAAA ou se a data for inexistente no calendário.
  */
 function parseDate(value: string): string {
 	const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(value.trim());
 	if (!match) throw new Error('data_venda inválida. Use DD/MM/AAAA.');
 
-	const day = Number(match[1]);
-	const month = Number(match[2]);
-	const year = Number(match[3]);
+	const day = match[1];
+	const month = match[2];
+	const year = match[3];
 
-	const date = new Date(Date.UTC(year, month - 1, day));
-	if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) {
+	const numericDay = Number(day);
+	const numericMonth = Number(month);
+	const numericYear = Number(year);
+
+	const date = new Date(Date.UTC(numericYear, numericMonth - 1, numericDay));
+	if (date.getUTCFullYear() !== numericYear || date.getUTCMonth() !== numericMonth - 1 || date.getUTCDate() !== numericDay) {
 		throw new Error('data_venda inválida.');
 	}
 
-	return date.toISOString();
+	return `${year}-${month}-${day}`;
 }
-
 /**
  * Remove caracteres BOM, divide o conteúdo em linhas e remove linhas vazias ao final.
  *

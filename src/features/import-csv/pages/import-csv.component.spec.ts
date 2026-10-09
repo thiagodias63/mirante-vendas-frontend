@@ -16,20 +16,20 @@ describe('ImportCsvComponent', () => {
 		fixture = TestBed.createComponent(ImportCsvComponent);
 	});
 
-	it('starts with empty upload state and simultaneous mode', () => {
+	it('should starts with empty upload state and simultaneous mode', () => {
 		expect(fixture.componentInstance.selectedFile).toBeNull();
 		expect(fixture.componentInstance.processedSales).toEqual([]);
 		expect(fixture.componentInstance.processMode).toBe('simultaneous');
 	});
 
-	it('renders the upload flow until sales have been processed', () => {
+	it('should renders the upload flow until sales have been processed', () => {
 		fixture.detectChanges();
 		expect(fixture.nativeElement.querySelector('app-upload-area')).toBeTruthy();
 		expect(fixture.nativeElement.querySelector('app-format-note')).toBeTruthy();
 		expect(fixture.nativeElement.querySelector('app-send-area')).toBeNull();
 	});
 
-	it('switches to the send flow after processed sales are assigned', () => {
+	it('should switches to the send flow after processed sales are assigned', () => {
 		const sale: CsvVenda = {
 			id_venda: 1,
 			produto: 'Camiseta',

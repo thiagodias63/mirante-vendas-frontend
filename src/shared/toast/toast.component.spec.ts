@@ -18,11 +18,11 @@ describe('ToastComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('stays hidden until a toast is published', () => {
+	it('should stays hidden until a toast is published', () => {
 		expect(fixture.nativeElement.querySelector('.toast-container')).toBeNull();
 	});
 
-	it('renders toast content and dismisses it on close', () => {
+	it('should renders toast content and dismisses it on close', () => {
 		service.showToast('Import complete', '2 sales ready', 'success');
 		fixture.detectChanges();
 		expect(fixture.nativeElement.querySelector('.toast-success')).toBeTruthy();

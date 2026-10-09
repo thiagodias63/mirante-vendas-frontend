@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-	selector: 'menu-header',
+	selector: 'app-menu-header',
 	templateUrl: './menu.component.html',
 	styleUrls: ['./menu.component.css'],
 })

@@ -30,7 +30,7 @@ describe('UploadAreaComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('emits the selected file, clears prior sales and resets the upload control', () => {
+	it('should emits the selected file, clears prior sales and resets the upload control', () => {
 		const file = new File(['csv'], 'vendas.csv');
 		fixture.componentInstance.fileUploadRef = jasmine.createSpyObj('FileUpload', ['clear']) as unknown as FileUpload;
 		const fileChange = jasmine.createSpy('fileChange');
@@ -46,7 +46,7 @@ describe('UploadAreaComponent', () => {
 		expect(toast.dismissToast).toHaveBeenCalled();
 	});
 
-	it('emits null when the selection is cleared', () => {
+	it('should emits null when the selection is cleared', () => {
 		fixture.componentInstance.fileUploadRef = jasmine.createSpyObj('FileUpload', ['clear']) as unknown as FileUpload;
 		const fileChange = jasmine.createSpy('fileChange');
 		fixture.componentInstance.selectedFileChange.subscribe(fileChange);
@@ -54,7 +54,7 @@ describe('UploadAreaComponent', () => {
 		expect(fileChange).toHaveBeenCalledWith(null);
 	});
 
-	it('rejects a file with a non-CSV extension', fakeAsync(() => {
+	it('should rejects a file with a non-CSV extension', fakeAsync(() => {
 		fixture.componentInstance.selectedFile = new File(['text'], 'vendas.txt');
 		fixture.componentInstance.submit();
 		flushMicrotasks();
@@ -62,7 +62,7 @@ describe('UploadAreaComponent', () => {
 		expect(toast.showToast).toHaveBeenCalledWith('Erro ao importar CSV', jasmine.any(String), 'error');
 	}));
 
-	it('loads the CSV, emits the results after the delay, and shows success', fakeAsync(() => {
+	it('should loads the CSV, emits the results after the delay, and shows success', fakeAsync(() => {
 		processCsv.process.and.returnValue(Promise.resolve(sales));
 		fixture.componentInstance.selectedFile = new File(['csv'], 'vendas.csv');
 		const loadingChange = jasmine.createSpy('loadingChange');
@@ -84,7 +84,7 @@ describe('UploadAreaComponent', () => {
 		expect(toastCall[2]).toBe('success');
 	}));
 
-	it('ends loading and reports CSV processing failures', fakeAsync(() => {
+	it('should ends loading and reports CSV processing failures', fakeAsync(() => {
 		processCsv.process.and.returnValue(Promise.reject(new Error('invalid CSV')));
 		fixture.componentInstance.selectedFile = new File(['csv'], 'vendas.csv');
 		const loadingChange = jasmine.createSpy('loadingChange');
@@ -95,7 +95,7 @@ describe('UploadAreaComponent', () => {
 		expect(toast.showToast).toHaveBeenCalledWith('Erro ao importar CSV', 'invalid CSV', 'error');
 	}));
 
-	it('does not process without a file or while loading', async () => {
+	it('should does not process without a file or while loading', async () => {
 		await fixture.componentInstance.submit();
 		fixture.componentInstance.selectedFile = new File(['csv'], 'vendas.csv');
 		fixture.componentInstance.loading = true;

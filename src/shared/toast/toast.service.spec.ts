@@ -13,12 +13,12 @@ describe('ToastService', () => {
 		service.toast$().subscribe((toast) => emitted.push(toast));
 	});
 
-	it('publishes a success toast to subscribers', () => {
+	it('should publishes a success toast to subscribers', () => {
 		service.showToast('Saved', 'Sales saved', 'success');
 		expect(emitted).toEqual([null, { title: 'Saved', message: 'Sales saved', type: 'success' }]);
 	});
 
-	it('publishes an error toast and clears it when dismissed', () => {
+	it('should publishes an error toast and clears it when dismissed', () => {
 		service.showToast('Error', 'Request failed', 'error');
 		service.dismissToast();
 		expect(emitted[1]).toEqual({ title: 'Error', message: 'Request failed', type: 'error' });

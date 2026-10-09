@@ -14,7 +14,7 @@ describe('MenuComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('creates the application menu', () => {
+	it('should creates the application menu', () => {
 		expect(fixture.componentInstance).toBeTruthy();
 		const links = fixture.nativeElement.querySelectorAll('.app-header__nav a') as NodeListOf<HTMLAnchorElement>;
 		expect(links.length).toBe(2);

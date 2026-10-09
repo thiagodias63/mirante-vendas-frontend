@@ -16,19 +16,16 @@ describe('DashboardComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [DashboardComponent],
 			imports: [CommonModule, FormsModule, SelectButtonModule],
-			providers: [
-				{ provide: VendasService, useValue: vendas },
-				DashboardStateService,
-			],
+			providers: [{ provide: VendasService, useValue: vendas }, DashboardStateService],
 			schemas: [NO_ERRORS_SCHEMA],
 		}).compileComponents();
 		fixture = TestBed.createComponent(DashboardComponent);
 		component = fixture.componentInstance;
 	});
 
-	it('publishes the selected product to the dialog state', () => {
+	it('should publishes the selected product to the dialog state', () => {
 		let selectedProduct: string | null | undefined;
-		component.dashboardState.selectedProduct$.subscribe((product) => selectedProduct = product);
+		component.dashboardState.selectedProduct$.subscribe((product) => (selectedProduct = product));
 
 		component.showDetails('Camiseta');
 
@@ -36,7 +33,7 @@ describe('DashboardComponent', () => {
 		expect(Object.prototype.hasOwnProperty.call(component.dashboardState.state, 'selectedProduct')).toBeFalse();
 	});
 
-	it('renders the dashboard and its child components', () => {
+	it('should renders the dashboard and its child components', () => {
 		fixture.detectChanges();
 
 		expect(fixture.nativeElement.textContent).toContain('Dashboard de vendas');
@@ -45,7 +42,7 @@ describe('DashboardComponent', () => {
 		expect(fixture.nativeElement.querySelector('app-product-details-dialog')).toBeTruthy();
 	});
 
-	it('renders only the view selected by the mode control', () => {
+	it('should renders only the view selected by the mode control', () => {
 		fixture.detectChanges();
 		expect(fixture.nativeElement.querySelector('app-sales-table')).toBeTruthy();
 		expect(fixture.nativeElement.querySelector('app-sales-chart')).toBeNull();

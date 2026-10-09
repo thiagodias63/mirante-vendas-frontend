@@ -20,15 +20,12 @@ describe('DashboardStateService', () => {
 		vendasService = jasmine.createSpyObj<VendasService>('VendasService', ['getAll']);
 		vendasService.getAll.and.returnValue(of(vendaPage));
 		TestBed.configureTestingModule({
-			providers: [
-				DashboardStateService,
-				{ provide: VendasService, useValue: vendasService },
-			],
+			providers: [DashboardStateService, { provide: VendasService, useValue: vendasService }],
 		});
 		stateService = TestBed.inject(DashboardStateService);
 	});
 
-	it('starts with an empty dashboard state', () => {
+	it('should starts with an empty dashboard state', () => {
 		expect(stateService.state).toEqual({
 			sales: [],
 			products: [],
@@ -41,7 +38,7 @@ describe('DashboardStateService', () => {
 		});
 	});
 
-	it('publishes the selected product separately from the dashboard data state', () => {
+	it('should publishes the selected product separately from the dashboard data state', () => {
 		const selectedProducts: Array<string | null> = [];
 		stateService.selectedProduct$.subscribe((product) => selectedProducts.push(product));
 
@@ -53,7 +50,7 @@ describe('DashboardStateService', () => {
 		expect(Object.prototype.hasOwnProperty.call(stateService.state, 'detailsVisible')).toBeFalse();
 	});
 
-	it('loads backend sales and sums quantity and unit price by product and day', () => {
+	it('should loads backend sales and sums quantity and unit price by product and day', () => {
 		stateService.loadSales();
 
 		expect(vendasService.getAll).toHaveBeenCalledWith({
@@ -72,7 +69,7 @@ describe('DashboardStateService', () => {
 		expect(stateService.state.loading).toBeFalse();
 	});
 
-	it('maps pagination, sorting, and filters to backend parameters', () => {
+	it('should maps pagination, sorting, and filters to backend parameters', () => {
 		const event: LazyLoadEvent = {
 			first: 25,
 			rows: 25,
@@ -99,7 +96,7 @@ describe('DashboardStateService', () => {
 		expect(stateService.state.page).toBe(1);
 	});
 
-	it('omits cleared or invalid filters', () => {
+	it('should omits cleared or invalid filters', () => {
 		stateService.loadSales({
 			first: 0,
 			rows: 10,
@@ -117,7 +114,7 @@ describe('DashboardStateService', () => {
 		});
 	});
 
-	it('reads a product filter wrapped in a constraints list', () => {
+	it('should reads a product filter wrapped in a constraints list', () => {
 		const event = {
 			first: 0,
 			rows: 10,
@@ -137,7 +134,7 @@ describe('DashboardStateService', () => {
 		});
 	});
 
-	it('publishes loading state and clears results when the request fails', () => {
+	it('should publishes loading state and clears results when the request fails', () => {
 		let loadingWhileRequesting = false;
 		stateService.state$.subscribe((state) => {
 			if (state.loading) loadingWhileRequesting = true;

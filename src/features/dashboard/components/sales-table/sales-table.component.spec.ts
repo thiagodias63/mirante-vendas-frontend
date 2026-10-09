@@ -24,7 +24,7 @@ describe('SalesTableComponent', () => {
 		component = fixture.componentInstance;
 	});
 
-	it('forwards pagination, sorting, and filter events to dashboard state', () => {
+	it('should forwards pagination, sorting, and filter events to dashboard state', () => {
 		const event: LazyLoadEvent = { first: 20, rows: 10, sortField: 'produto' };
 		const loader = spyOn(component.dashboardState, 'loadSales');
 
@@ -33,7 +33,7 @@ describe('SalesTableComponent', () => {
 		expect(loader).toHaveBeenCalledWith(event);
 	});
 
-	it('emits the selected product for the details dialog', () => {
+	it('should emits the selected product for the details dialog', () => {
 		const listener = jasmine.createSpy('productSelected listener');
 		component.productSelected.subscribe(listener);
 
@@ -42,7 +42,7 @@ describe('SalesTableComponent', () => {
 		expect(listener).toHaveBeenCalledOnceWith('Camiseta');
 	});
 
-	it('renders data aggregated by product and day', () => {
+	it('should renders data aggregated by product and day', () => {
 		const sales: Venda[] = [
 			{ idVenda: 1, produto: 'Camiseta', quantidade: 2, precoUnitario: 10, dataVenda: '2026-10-08T10:00:00Z' },
 			{ idVenda: 2, produto: 'Camiseta', quantidade: 3, precoUnitario: 10, dataVenda: '2026-10-08T11:00:00Z' },

@@ -53,7 +53,7 @@ describe('ProcessCsvService', () => {
 		expect(terminate).toHaveBeenCalled();
 	});
 
-	it('rejects file read errors and aborts', async () => {
+	it('should rejects file read errors and aborts', async () => {
 		const readError = service.process(new File(['csv'], 'sales.csv'));
 		(reader.onerror as (() => void) | null)?.();
 		await expectAsync(readError).toBeRejected();
@@ -62,7 +62,7 @@ describe('ProcessCsvService', () => {
 		await expectAsync(aborted).toBeRejected();
 	});
 
-	it('rejects when the reader result is not text or the worker cannot start', async () => {
+	it('should rejects when the reader result is not text or the worker cannot start', async () => {
 		const emptyResult = service.process(new File(['csv'], 'sales.csv'));
 		readerResult = null;
 		(reader.onload as (() => void) | null)?.();
@@ -75,7 +75,7 @@ describe('ProcessCsvService', () => {
 		await expectAsync(workerStartError).toBeRejected();
 	});
 
-	it('rejects invalid worker responses and parsing errors', async () => {
+	it('should rejects invalid worker responses and parsing errors', async () => {
 		const invalid = startAndLoad();
 		(worker.onmessage as ((event: MessageEvent) => void) | null)?.({
 			data: { success: false, error: 'invalid header' },
@@ -87,7 +87,7 @@ describe('ProcessCsvService', () => {
 		await expectAsync(malformed).toBeRejected();
 	});
 
-	it('rejects worker runtime errors and local storage failures', async () => {
+	it('should rejects worker runtime errors and local storage failures', async () => {
 		const workerError = startAndLoad();
 		(worker.onerror as ((event: ErrorEvent) => void) | null)?.(new ErrorEvent('error'));
 		await expectAsync(workerError).toBeRejected();

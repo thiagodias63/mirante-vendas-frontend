@@ -25,10 +25,7 @@ describe('ProductDetailsDialogComponent', () => {
 		await TestBed.configureTestingModule({
 			declarations: [ProductDetailsDialogComponent],
 			imports: [CommonModule],
-			providers: [
-				{ provide: VendasService, useValue: vendas },
-				DashboardStateService,
-			],
+			providers: [{ provide: VendasService, useValue: vendas }, DashboardStateService],
 			schemas: [NO_ERRORS_SCHEMA],
 		}).compileComponents();
 		fixture = TestBed.createComponent(ProductDetailsDialogComponent);
@@ -36,9 +33,9 @@ describe('ProductDetailsDialogComponent', () => {
 		dashboardState = TestBed.inject(DashboardStateService);
 	});
 
-	it('loads exact product sales when the selected product changes', () => {
+	it('should loads exact product sales when the selected product changes', () => {
 		let current: { sales: Venda[]; loading: boolean; errorMessage: string } | undefined;
-		component.sales$.subscribe((state) => current = state);
+		component.sales$.subscribe((state) => (current = state));
 
 		dashboardState.openProductDetails('Camiseta');
 
@@ -53,18 +50,18 @@ describe('ProductDetailsDialogComponent', () => {
 		expect(current?.loading).toBeFalse();
 	});
 
-	it('closes the dialog by clearing the selected product', () => {
+	it('should closes the dialog by clearing the selected product', () => {
 		dashboardState.openProductDetails('Camiseta');
 		component.setVisible(false);
 
 		let selectedProduct: string | null | undefined;
-		dashboardState.selectedProduct$.subscribe((product) => selectedProduct = product);
+		dashboardState.selectedProduct$.subscribe((product) => (selectedProduct = product));
 		expect(selectedProduct).toBeNull();
 	});
 
-	it('emits an error state when a product sales request fails', () => {
+	it('should  emits an error state when a product sales request fails', () => {
 		let current: { sales: Venda[]; loading: boolean; errorMessage: string } | undefined;
-		component.sales$.subscribe((state) => current = state);
+		component.sales$.subscribe((state) => (current = state));
 		vendas.getAll.and.returnValue(throwError(() => new Error('backend unavailable')));
 
 		dashboardState.openProductDetails('Camiseta');
