@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MenubarModule } from 'primeng/menubar';
+import { ToolbarModule } from 'primeng/toolbar';
 import { MenuComponent } from './menu.component';
 
 describe('MenuComponent', () => {
@@ -8,7 +10,7 @@ describe('MenuComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			declarations: [MenuComponent],
-			imports: [RouterTestingModule],
+			imports: [RouterTestingModule, MenubarModule, ToolbarModule],
 		}).compileComponents();
 		fixture = TestBed.createComponent(MenuComponent);
 		fixture.detectChanges();
@@ -16,7 +18,7 @@ describe('MenuComponent', () => {
 
 	it('creates the application menu', () => {
 		expect(fixture.componentInstance).toBeTruthy();
-		const links = fixture.nativeElement.querySelectorAll('.app-header__nav a') as NodeListOf<HTMLAnchorElement>;
+		const links = fixture.nativeElement.querySelectorAll('.p-menubar .p-menuitem-link') as NodeListOf<HTMLAnchorElement>;
 		expect(links.length).toBe(2);
 		expect(links[0].textContent).toContain('Dashboard');
 		expect(links[1].textContent).toContain('Importar CSV');
