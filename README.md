@@ -1,29 +1,81 @@
-# MiranteVendasFrontend
+# Mirante Vendas Frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.11.
+Aplicação Angular para consultar vendas, visualizar os totais por produto e dia e importar vendas a partir de arquivos CSV.
 
-## Development server
+## Requisitos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Node.js e npm instalados.
+- Google Chrome instalado para executar os testes com Karma.
+- API de vendas disponível. O ambiente de desenvolvimento aponta para `http://localhost:5018/api`.
 
-## Code scaffolding
+## Instalação
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Na raiz do projeto, instale as dependências travadas no `package-lock.json`:
+
+```bash
+npm ci
+```
+
+## Executar localmente
+
+```bash
+npm start
+```
+
+A aplicação estará disponível em [http://localhost:4200](http://localhost:4200). O servidor recarrega a página quando os arquivos de código são alterados.
+
+Para apontar para outra API, ajuste `apiUrl` em `src/environments/environment.ts`. O build de produção usa `src/environments/environment.prod.ts`.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+npm run build
+```
 
-## Running unit tests
+O Angular CLI usa a configuração de produção por padrão. Os arquivos gerados ficam em `dist/mirante-vendas-frontend/`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Testes unitários e cobertura
 
-## Running end-to-end tests
+Execute os testes em modo interativo:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+npm run test
+```
 
-## Further help
+Para executar uma vez, sem watch, usando Chrome headless:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+npm run test -- --watch=false --browsers=ChromeHeadlessCI
+```
 
-> "\uFEFF" é o caractere Unicode conhecido como BOM (Byte Order Mark ou Marca de Ordem de Byte).
+A configuração do projeto ativa a cobertura de código para os testes. O relatório HTML fica em `coverage/mirante-vendas-frontend/index.html`; o resumo também é exibido no terminal. Abra o relatório HTML no navegador para navegar pela cobertura por arquivo.
+
+## Lint
+
+```bash
+npm run lint
+```
+
+## Organização do código
+
+As telas são divididas por funcionalidade em `src/features`. As rotas de Dashboard e Import CSV carregam seus módulos sob demanda. Código reutilizado entre funcionalidades fica em `src/shared`.
+
+### `features/menu`
+
+Define a navegação principal da aplicação para Dashboard e Import CSV. O menu é exibido junto ao shell da aplicação.
+
+### `features/dashboard`
+
+Apresenta os dados de vendas em tabela ou gráfico. O estado da funcionalidade concentra paginação, ordenação, filtros e dados carregados; as vendas são agregadas por produto e dia. A tabela permite abrir os detalhes das vendas de um produto, e o botão de exportação gera um CSV dos totais exibidos.
+
+### `features/import-csv`
+
+Cuida do fluxo de importação: seleção e validação do arquivo, processamento do CSV em Web Worker, apresentação do estado do processamento e envio das vendas à API. O envio pode ser simultâneo ou sequencial; o modo sequencial aplica retentativas às requisições que falharem.
+
+### `shared`
+
+Contém recursos compartilhados, incluindo o serviço HTTP de vendas (`src/shared/api/vendas.service.ts`) e os componentes e serviços de notificação toast (`src/shared/toast`).
+
+## Glossário
+
+> `\uFEFF` é a notação Unicode do caractere BOM (Byte Order Mark ou Marca de Ordem de Byte), usado no início do CSV exportado para ajudar programas como planilhas a identificar a codificação do arquivo.
