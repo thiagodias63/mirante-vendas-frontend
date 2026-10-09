@@ -2,10 +2,10 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LazyLoadEvent } from 'primeng/api';
 import { of } from 'rxjs';
-import { Venda } from 'src/shared/api/vendas.service';
 import { DashboardStateService } from '../../state/dashboard-state.service';
 import { VendasService } from 'src/shared/api/vendas.service';
 import { SalesTableComponent } from './sales-table.component';
+import { VendasResponse } from 'src/shared/core/interfaces/vendas-response';
 
 describe('SalesTableComponent', () => {
 	let fixture: ComponentFixture<SalesTableComponent>;
@@ -43,7 +43,7 @@ describe('SalesTableComponent', () => {
 	});
 
 	it('should renders data aggregated by product and day', () => {
-		const sales: Venda[] = [
+		const sales: VendasResponse[] = [
 			{ idVenda: 1, produto: 'Camiseta', quantidade: 2, precoUnitario: 10, dataVenda: '2026-10-08T10:00:00Z' },
 			{ idVenda: 2, produto: 'Camiseta', quantidade: 3, precoUnitario: 10, dataVenda: '2026-10-08T11:00:00Z' },
 			{ idVenda: 3, produto: 'Camiseta', quantidade: 4, precoUnitario: 12, dataVenda: '2026-10-09T09:00:00Z' },

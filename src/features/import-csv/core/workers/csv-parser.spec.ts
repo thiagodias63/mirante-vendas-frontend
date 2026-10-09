@@ -7,11 +7,10 @@ describe('CSV worker parser', () => {
 		const csv = `\uFEFF${header}\r\n 12 , Camiseta , 2 , 49.9 , 08/10/2026 \r\n\r\n`;
 		expect(parseCsv(csv)).toEqual([
 			{
-				id_venda: 12,
 				produto: 'Camiseta',
 				quantidade: 2,
-				preco_unitario: 49.9,
-				data_venda: '08/10/2026',
+				precoUnitario: 4990,
+				dataVenda: '2026-10-08',
 			},
 		]);
 	});
@@ -44,11 +43,10 @@ describe('CSV worker parser', () => {
 			success: true,
 			data: [
 				{
-					id_venda: 1,
 					produto: 'Produto',
 					quantidade: 1,
-					preco_unitario: 10,
-					data_venda: '01/01/2026',
+					precoUnitario: 1000,
+					dataVenda: '2026-01-01',
 				},
 			],
 		});

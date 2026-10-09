@@ -21,7 +21,7 @@ describe('ProcessCsvService', () => {
 
 	it('sends the File to a worker, stores parsed sales, and terminates the worker', async () => {
 		const file = new File(['csv content'], 'sales.csv');
-		const sales: CsvVenda[] = [{ id_venda: 7, produto: 'Camiseta', quantidade: 2, preco_unitario: 45, data_venda: '2026-10-08' }];
+		const sales: CsvVenda[] = [{ produto: 'Camiseta', quantidade: 2, precoUnitario: 45, dataVenda: '2026-10-08' }];
 		const result = service.process(file);
 
 		expect(workerConstructor).toHaveBeenCalled();
@@ -38,8 +38,9 @@ describe('ProcessCsvService', () => {
 	it('rejects when the worker cannot start', async () => {
 		workerConstructor.and.throwError('Worker unavailable');
 
-		await expectAsync(service.process(new File(['csv'], 'sales.csv')))
-			.toBeRejectedWithError('Não foi possível iniciar o processamento do CSV.');
+		await expectAsync(service.process(new File(['csv'], 'sales.csv'))).toBeRejectedWithError(
+			'Não foi possível iniciar o processamento do CSV.',
+		);
 	});
 
 	it('rejects invalid worker responses and parsing errors', async () => {

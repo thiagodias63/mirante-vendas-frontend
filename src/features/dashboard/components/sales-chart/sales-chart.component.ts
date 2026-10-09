@@ -28,7 +28,7 @@ export class SalesChartComponent {
 		},
 	};
 
-	constructor(dashboardState: DashboardStateService) {
+	constructor(private readonly dashboardState: DashboardStateService) {
 		dashboardState.state$.subscribe(({ chartProducts, chartLoading, chartErrorMessage }) => {
 			this.products = chartProducts;
 			this.loading = chartLoading;
@@ -44,5 +44,9 @@ export class SalesChartComponent {
 				],
 			};
 		});
+	}
+
+	ngOnInit(): void {
+		this.dashboardState.loadChartSales();
 	}
 }

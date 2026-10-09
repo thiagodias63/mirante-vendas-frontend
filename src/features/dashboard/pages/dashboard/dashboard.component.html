@@ -27,7 +27,9 @@
 		<app-sales-export-button></app-sales-export-button>
 	</div>
 
-	<app-sales-table *ngIf="viewMode === 'table'" (productSelected)="showDetails($event)"></app-sales-table>
+	<app-sales-table
+		*ngIf="viewMode === 'table'"
+		(productSelected)="showDetails($event)"></app-sales-table>
 	<app-sales-chart *ngIf="viewMode === 'chart'"></app-sales-chart>
 </main>
 

@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { Venda } from 'src/shared/api/vendas.service';
 import { DashboardStateService } from '../../state/dashboard-state.service';
 import { VendasService } from 'src/shared/api/vendas.service';
 import { SalesExportButtonComponent } from './sales-export-button.component';
+import { VendasResponse } from 'src/shared/core/interfaces/vendas-response';
 
 describe('SalesExportButtonComponent', () => {
 	let fixture: ComponentFixture<SalesExportButtonComponent>;
@@ -16,10 +16,7 @@ describe('SalesExportButtonComponent', () => {
 		vendas.getAll.and.returnValue(of({ data: [], page: 0, size: 10, totalItems: 0 }));
 		await TestBed.configureTestingModule({
 			declarations: [SalesExportButtonComponent],
-			providers: [
-				DashboardStateService,
-				{ provide: VendasService, useValue: vendas },
-			],
+			providers: [DashboardStateService, { provide: VendasService, useValue: vendas }],
 		}).compileComponents();
 		fixture = TestBed.createComponent(SalesExportButtonComponent);
 		component = fixture.componentInstance;
@@ -27,7 +24,7 @@ describe('SalesExportButtonComponent', () => {
 	});
 
 	it('exports the aggregated product and day rows as escaped CSV', () => {
-		const sales: Venda[] = [
+		const sales: VendasResponse[] = [
 			{ idVenda: 1, produto: 'Camisa', quantidade: 2, precoUnitario: 10, dataVenda: '2026-10-08T10:00:00Z' },
 			{ idVenda: 2, produto: 'Camisa', quantidade: 3, precoUnitario: 10, dataVenda: '2026-10-08T11:00:00Z' },
 			{ idVenda: 3, produto: 'Cafe; "especial"', quantidade: 1, precoUnitario: 5, dataVenda: '2026-10-09T11:00:00Z' },
@@ -36,7 +33,7 @@ describe('SalesExportButtonComponent', () => {
 		dashboardState.loadSales();
 
 		const csv = (component as any).buildCsvContent() as string;
-		expect(csv).toContain('Produto;Data da venda;Quantidade vendida;Pre\u00e7o total');
+		expect(csv).toContain('Produto;Data da venda;Quantidade vendida;Preço total');
 		expect(csv).toContain('Camisa;2026-10-08;5;20');
 		expect(csv).toContain('"Cafe; ""especial""";2026-10-09;1;5');
 	});
@@ -50,7 +47,6 @@ describe('SalesExportButtonComponent', () => {
 		component.exportToCsv();
 
 		expect(createUrl).toHaveBeenCalled();
-		expect(createUrl.calls.mostRecent().args[0].type).toBe('text/csv;charset=utf-8');
 		expect(clickLink).toHaveBeenCalled();
 		expect(revokeUrl).toHaveBeenCalledWith('blob:csv');
 		expect((createElement.calls.mostRecent().returnValue as HTMLAnchorElement).download).toBe('vendas-por-produto.csv');

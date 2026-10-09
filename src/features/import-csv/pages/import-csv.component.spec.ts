@@ -31,11 +31,10 @@ describe('ImportCsvComponent', () => {
 
 	it('should switches to the send flow after processed sales are assigned', () => {
 		const sale: CsvVenda = {
-			id_venda: 1,
 			produto: 'Camiseta',
 			quantidade: 2,
-			preco_unitario: 49.9,
-			data_venda: '06/09/2026',
+			precoUnitario: 49.9,
+			dataVenda: '06/09/2026',
 		};
 		fixture.componentInstance.processedSales = [sale];
 		fixture.detectChanges();

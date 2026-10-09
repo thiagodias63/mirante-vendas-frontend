@@ -16,7 +16,14 @@ import { DashboardStateService } from './state/dashboard-state.service';
 import { CurrencyBrPipe } from './pipes/currency-br.pipe';
 
 @NgModule({
-	declarations: [DashboardComponent, SalesTableComponent, SalesChartComponent, SalesExportButtonComponent, ProductDetailsDialogComponent, CurrencyBrPipe],
+	declarations: [
+		DashboardComponent,
+		SalesTableComponent,
+		SalesChartComponent,
+		SalesExportButtonComponent,
+		ProductDetailsDialogComponent,
+		CurrencyBrPipe,
+	],
 	imports: [
 		CommonModule,
 		FormsModule,

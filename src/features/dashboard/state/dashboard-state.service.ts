@@ -74,7 +74,6 @@ export class DashboardStateService {
 		if (event) {
 			if (event.filters) {
 				this.readFilters(event);
-				this.loadChartSales();
 			}
 			tableFirst = event.first || 0;
 			size = event.rows || size;
@@ -124,7 +123,7 @@ export class DashboardStateService {
 		this.chartFilterSignature = signature;
 
 		const params: GetAllVendasParams = {
-			size: 500,
+			size: 100,
 			page: 0,
 			orderBy: 'produto',
 			orderDirection: 'asc',
@@ -135,11 +134,12 @@ export class DashboardStateService {
 
 		this.update({ ...this.state, chartLoading: true, chartErrorMessage: '' });
 		this.vendasService.getAll(params).subscribe({
-			next: (response) => this.update({
-				...this.state,
-				chartProducts: this.groupByProductName(response.data),
-				chartLoading: false,
-			}),
+			next: (response) =>
+				this.update({
+					...this.state,
+					chartProducts: this.groupByProductName(response.data),
+					chartLoading: false,
+				}),
 			error: () => {
 				this.chartFilterSignature = null;
 				this.update({
@@ -204,7 +204,7 @@ export class DashboardStateService {
 		return Array.from(agrupamentosPorProdutoEData.values()).flatMap((agrupamentosPorData) => Array.from(agrupamentosPorData.values()));
 	}
 
-	private groupByProductName(vendas: Venda[]): ChartProductSummary[] {
+	private groupByProductName(vendas: VendasResponse[]): ChartProductSummary[] {
 		const quantidadesPorProduto = new Map<string, number>();
 		for (const venda of vendas) {
 			quantidadesPorProduto.set(venda.produto, (quantidadesPorProduto.get(venda.produto) || 0) + venda.quantidade);

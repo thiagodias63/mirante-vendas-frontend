@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DashboardStateService } from '../../state/dashboard-state.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { DashboardStateService } from '../../state/dashboard-state.service';
 	templateUrl: './dashboard.component.html',
 	styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
 	readonly viewModes = [
 		{ label: 'Tabela', value: 'table' },
 		{ label: 'Gráfico', value: 'chart' },
@@ -14,10 +14,6 @@ export class DashboardComponent implements OnInit {
 	viewMode: 'table' | 'chart' = 'table';
 
 	constructor(readonly dashboardState: DashboardStateService) {}
-
-	ngOnInit(): void {
-		this.dashboardState.loadChartSales();
-	}
 
 	showDetails(product: string): void {
 		this.dashboardState.openProductDetails(product);

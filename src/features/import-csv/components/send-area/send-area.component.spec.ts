@@ -12,7 +12,7 @@ describe('SendAreaComponent', () => {
 	let fixture: ComponentFixture<SendAreaComponent>;
 	let factory: jasmine.SpyObj<ProcessDataFactory>;
 	let toast: jasmine.SpyObj<ToastService>;
-	const sales: CsvVenda[] = [{ id_venda: 1, produto: 'Camiseta', quantidade: 1, preco_unitario: 49.9, data_venda: '06/09/2026' }];
+	const sales: CsvVenda[] = [{ produto: 'Camiseta', quantidade: 1, precoUnitario: 49.9, dataVenda: '06/09/2026' }];
 
 	beforeEach(async () => {
 		factory = jasmine.createSpyObj<ProcessDataFactory>('ProcessDataFactory', ['create']);

@@ -1,20 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { LazyLoadEvent } from 'primeng/api';
 import { of, throwError } from 'rxjs';
-import { Venda, VendaPage, VendasService } from 'src/shared/api/vendas.service';
+import { VendasService } from 'src/shared/api/vendas.service';
 import { DashboardStateService } from './dashboard-state.service';
+import { VendasResponse } from 'src/shared/core/interfaces/vendas-response';
+import { VendasPaginated } from 'src/shared/core/interfaces/vendas-paginated';
 
 describe('DashboardStateService', () => {
 	let stateService: DashboardStateService;
 	let vendasService: jasmine.SpyObj<VendasService>;
 
-	const vendas: Venda[] = [
+	const vendas: VendasResponse[] = [
 		{ idVenda: 1, produto: 'Camisa', quantidade: 2, precoUnitario: 10, dataVenda: '2026-10-08T09:00:00Z' },
 		{ idVenda: 2, produto: 'Camisa', quantidade: 3, precoUnitario: 12, dataVenda: '2026-10-08T16:30:00Z' },
 		{ idVenda: 3, produto: 'Camisa', quantidade: 4, precoUnitario: 15, dataVenda: '2026-10-09T10:00:00Z' },
 		{ idVenda: 4, produto: 'Calça', quantidade: 1, precoUnitario: 50, dataVenda: '2026-10-08T11:00:00Z' },
 	];
-	const vendaPage: VendaPage = { data: vendas, page: 0, size: 10, totalItems: 4 };
+	const vendaPage: VendasPaginated = { data: vendas, page: 0, size: 10, totalItems: 4 };
 
 	beforeEach(() => {
 		vendasService = jasmine.createSpyObj<VendasService>('VendasService', ['getAll']);
@@ -83,7 +85,7 @@ describe('DashboardStateService', () => {
 		});
 		expect(stateService.state.chartProducts).toEqual([
 			{ produto: 'Camisa', quantidade: 9 },
-			{ produto: 'CalÃ§a', quantidade: 1 },
+			{ produto: 'Calça', quantidade: 1 },
 		]);
 		expect(stateService.state.chartLoading).toBeFalse();
 	});

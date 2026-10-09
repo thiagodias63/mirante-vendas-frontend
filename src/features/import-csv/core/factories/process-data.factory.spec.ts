@@ -8,9 +8,9 @@ import { ProcessDataSimultaneously } from '../strategies/process-data-simultaneo
 import { environment } from 'src/environments/environment';
 
 const sales: CsvVenda[] = [
-	{ id_venda: 1, produto: 'Camiseta', quantidade: 1, preco_unitario: 49.9, data_venda: '06/09/2026' },
-	{ id_venda: 2, produto: 'Calça', quantidade: 2, preco_unitario: 99.9, data_venda: '07/09/2026' },
-	{ id_venda: 3, produto: 'Tênis', quantidade: 1, preco_unitario: 699.9, data_venda: '10/09/2026' },
+	{ produto: 'Camiseta', quantidade: 1, precoUnitario: 49.9, dataVenda: '06/09/2026' },
+	{ produto: 'Calça', quantidade: 2, precoUnitario: 99.9, dataVenda: '07/09/2026' },
+	{ produto: 'Tênis', quantidade: 1, precoUnitario: 699.9, dataVenda: '10/09/2026' },
 ];
 
 const vendasEndpoint = environment.apiUrl + '/vendas';

@@ -2,9 +2,11 @@ import { CommonModule } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
-import { Venda, VendaPage, VendasService } from 'src/shared/api/vendas.service';
+import { VendasService } from 'src/shared/api/vendas.service';
 import { DashboardStateService } from '../../state/dashboard-state.service';
 import { ProductDetailsDialogComponent } from './product-details-dialog.component';
+import { VendasPaginated } from 'src/shared/core/interfaces/vendas-paginated';
+import { VendasResponse } from 'src/shared/core/interfaces/vendas-response';
 
 describe('ProductDetailsDialogComponent', () => {
 	let fixture: ComponentFixture<ProductDetailsDialogComponent>;
@@ -12,7 +14,7 @@ describe('ProductDetailsDialogComponent', () => {
 	let vendas: jasmine.SpyObj<VendasService>;
 	let dashboardState: DashboardStateService;
 
-	const sales: Venda[] = [
+	const sales: VendasResponse[] = [
 		{ idVenda: 1, produto: 'Camiseta', quantidade: 2, precoUnitario: 10, dataVenda: '2026-10-08T10:00:00Z' },
 		{ idVenda: 2, produto: 'Camiseta', quantidade: 3, precoUnitario: 10, dataVenda: '2026-10-08T11:00:00Z' },
 		{ idVenda: 3, produto: 'Camiseta estampada', quantidade: 1, precoUnitario: 15, dataVenda: '2026-10-08T12:00:00Z' },
@@ -20,7 +22,7 @@ describe('ProductDetailsDialogComponent', () => {
 
 	beforeEach(async () => {
 		vendas = jasmine.createSpyObj<VendasService>('VendasService', ['getAll']);
-		const page: VendaPage = { data: sales, page: 0, size: 100, totalItems: 3 };
+		const page: VendasPaginated = { data: sales, page: 0, size: 100, totalItems: 3 };
 		vendas.getAll.and.returnValue(of(page));
 		await TestBed.configureTestingModule({
 			declarations: [ProductDetailsDialogComponent],
@@ -34,7 +36,7 @@ describe('ProductDetailsDialogComponent', () => {
 	});
 
 	it('should loads exact product sales when the selected product changes', () => {
-		let current: { sales: Venda[]; loading: boolean; errorMessage: string } | undefined;
+		let current: { sales: Omit<VendasResponse, 'idVenda'>[]; loading: boolean; errorMessage: string } | undefined;
 		component.sales$.subscribe((state) => (current = state));
 
 		dashboardState.openProductDetails('Camiseta');
@@ -42,11 +44,11 @@ describe('ProductDetailsDialogComponent', () => {
 		expect(vendas.getAll).toHaveBeenCalledWith({
 			size: 100,
 			page: 0,
-			orderBy: 'idVenda',
+			orderBy: 'dataVenda',
 			orderDirection: 'asc',
 			Produto: '*Camiseta*',
 		});
-		expect(current?.sales.map((sale) => sale.idVenda)).toEqual([1, 2]);
+		expect(current?.sales.map((sale) => sale.dataVenda)).toEqual(['2026-10-08T10:00:00Z', '2026-10-08T11:00:00Z']);
 		expect(current?.loading).toBeFalse();
 	});
 
@@ -60,7 +62,7 @@ describe('ProductDetailsDialogComponent', () => {
 	});
 
 	it('should  emits an error state when a product sales request fails', () => {
-		let current: { sales: Venda[]; loading: boolean; errorMessage: string } | undefined;
+		let current: { sales: Omit<VendasResponse, 'idVenda'>[]; loading: boolean; errorMessage: string } | undefined;
 		component.sales$.subscribe((state) => (current = state));
 		vendas.getAll.and.returnValue(throwError(() => new Error('backend unavailable')));
 
