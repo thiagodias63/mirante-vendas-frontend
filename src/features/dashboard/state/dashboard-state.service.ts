@@ -113,11 +113,27 @@ export class DashboardStateService {
 
 	private readFilters(event: LazyLoadEvent): void {
 		const filters = event.filters;
-		const product = filters?.['produto']?.value;
-		const quantity = filters?.['quantidade']?.value;
+		const product = this.getFilterValue(filters?.['produto']);
+		const quantity = this.getFilterValue(filters?.['quantidade']);
 		this.productFilter = typeof product === 'string' ? product : '';
 		const parsedQuantity = quantity === null || quantity === undefined || quantity === '' ? null : Number(quantity);
 		this.quantityFilter = parsedQuantity !== null && Number.isInteger(parsedQuantity) ? parsedQuantity : null;
+	}
+
+	private getFilterValue(filter: unknown): unknown {
+		if (Array.isArray(filter)) {
+			const matchingFilter = filter.find((item) => {
+				const value = this.getFilterValue(item);
+				return value !== null && value !== undefined && value !== '';
+			});
+			return matchingFilter === undefined ? null : this.getFilterValue(matchingFilter);
+		}
+		if (!filter || typeof filter !== 'object') return filter;
+
+		const metadata = filter as { value?: unknown; constraints?: unknown[] };
+		if ('value' in metadata) return metadata.value;
+		if (metadata.constraints) return this.getFilterValue(metadata.constraints);
+		return null;
 	}
 
 	private groupByProduct(vendas: Venda[]): ProductSummary[] {

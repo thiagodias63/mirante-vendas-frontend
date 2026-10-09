@@ -117,6 +117,26 @@ describe('DashboardStateService', () => {
 		});
 	});
 
+	it('reads a product filter wrapped in a constraints list', () => {
+		const event = {
+			first: 0,
+			rows: 10,
+			filters: {
+				produto: { constraints: [{ value: 'Camisa', matchMode: 'contains' }] },
+			},
+		} as unknown as LazyLoadEvent;
+
+		stateService.loadSales(event);
+
+		expect(vendasService.getAll).toHaveBeenCalledWith({
+			size: 10,
+			page: 0,
+			orderBy: 'produto',
+			orderDirection: 'asc',
+			Produto: '*Camisa*',
+		});
+	});
+
 	it('publishes loading state and clears results when the request fails', () => {
 		let loadingWhileRequesting = false;
 		stateService.state$.subscribe((state) => {

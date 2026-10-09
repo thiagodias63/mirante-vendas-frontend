@@ -13,7 +13,6 @@ export class SalesTableComponent {
 	constructor(readonly dashboardState: DashboardStateService) {}
 
 	requestPage(event: LazyLoadEvent): void {
-		console.log('event', event);
 		this.dashboardState.loadSales(event);
 	}
 
