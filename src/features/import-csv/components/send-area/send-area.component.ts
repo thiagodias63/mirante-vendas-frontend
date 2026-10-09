@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CsvVenda } from '../../core/interfaces/csv-venda';
 import { ProcessData, ProcessMode } from '../../core/interfaces/process-data';
 import { ProcessDataFactory } from '../../core/factories/process-data.factory';
@@ -9,6 +9,7 @@ import { ToastService } from 'src/shared/toast/toast.service';
   selector: 'app-send-area',
   templateUrl: './send-area.component.html',
   styleUrls: ['./send-area.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SendAreaComponent {
   readonly processModes = [

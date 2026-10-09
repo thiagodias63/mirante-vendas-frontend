@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CsvVenda } from '../core/interfaces/csv-venda';
 import { ProcessMode } from '../core/interfaces/process-data';
 
@@ -6,6 +6,7 @@ import { ProcessMode } from '../core/interfaces/process-data';
   selector: 'import-csv',
   templateUrl: './import-csv.component.html',
   styleUrls: ['./import-csv.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImportCsvComponent {
   selectedFile: File | null = null;

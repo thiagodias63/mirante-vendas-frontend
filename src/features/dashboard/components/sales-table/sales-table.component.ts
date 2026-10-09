@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { DashboardStateService } from '../../state/dashboard-state.service';
 
@@ -6,6 +6,7 @@ import { DashboardStateService } from '../../state/dashboard-state.service';
 	selector: 'app-sales-table',
 	templateUrl: './sales-table.component.html',
 	styleUrls: ['./sales-table.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SalesTableComponent {
 	@Output() readonly productSelected = new EventEmitter<string>();

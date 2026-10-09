@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { VendasService } from 'src/shared/api/vendas.service';
@@ -15,6 +15,7 @@ interface ProductDetailsViewState {
 	selector: 'app-product-details-dialog',
 	templateUrl: './product-details-dialog.component.html',
 	styleUrls: ['./product-details-dialog.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDetailsDialogComponent {
 	readonly sales$: Observable<ProductDetailsViewState>;

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DashboardStateService } from '../../state/dashboard-state.service';
 
 @Component({
 	selector: 'app-sales-export-button',
 	templateUrl: './sales-export-button.component.html',
 	styleUrls: ['./sales-export-button.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SalesExportButtonComponent {
 	constructor(private readonly dashboardState: DashboardStateService) {}

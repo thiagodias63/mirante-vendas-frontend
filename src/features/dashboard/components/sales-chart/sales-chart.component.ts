@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { ChartProductSummary, DashboardStateService } from '../../state/dashboard-state.service';
 
@@ -6,6 +6,7 @@ import { ChartProductSummary, DashboardStateService } from '../../state/dashboar
 	selector: 'app-sales-chart',
 	templateUrl: './sales-chart.component.html',
 	styleUrls: ['./sales-chart.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SalesChartComponent {
 	products: ChartProductSummary[] = [];
