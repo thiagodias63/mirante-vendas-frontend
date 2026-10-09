@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { BehaviorSubject } from 'rxjs';
-import { GetAllVendasParams, Venda, VendaPage, VendasService } from 'src/shared/api/vendas.service';
-
-export interface ProductSummary {
-	produto: string;
-	dataVenda: string;
-	quantidade: number;
-	precoUnitario: number;
-}
+import { VendasService } from 'src/shared/api/vendas.service';
+import { GetAllVendasParams } from 'src/shared/core/interfaces/get-all-vendas-params';
+import { VendasPaginated } from 'src/shared/core/interfaces/vendas-paginated';
+import { VendasResponse } from 'src/shared/core/interfaces/vendas-response';
 
 export interface DashboardState {
-	sales: Venda[];
-	products: ProductSummary[];
+	sales: VendasResponse[];
+	products: Omit<VendasResponse, 'idVenda'>[];
 	totalItems: number;
 	size: number;
 	page: number;
@@ -87,7 +83,7 @@ export class DashboardStateService {
 		if (this.quantityFilter !== null) params.Quantidade = this.quantityFilter;
 
 		this.vendasService.getAll(params).subscribe({
-			next: (response: VendaPage) =>
+			next: (response: VendasPaginated) =>
 				this.update({
 					...this.state,
 					sales: response.data,
@@ -136,13 +132,13 @@ export class DashboardStateService {
 		return null;
 	}
 
-	private groupByProduct(vendas: Venda[]): ProductSummary[] {
-		const agrupamentosPorProdutoEData = new Map<string, Map<string, ProductSummary>>();
+	private groupByProduct(vendas: VendasResponse[]): Omit<VendasResponse, 'idVenda'>[] {
+		const agrupamentosPorProdutoEData = new Map<string, Map<string, Omit<VendasResponse, 'idVenda'>>>();
 		for (const venda of vendas) {
 			const dataVenda = venda.dataVenda.split('T')[0];
 			let agrupamentosPorData = agrupamentosPorProdutoEData.get(venda.produto);
 			if (!agrupamentosPorData) {
-				agrupamentosPorData = new Map<string, ProductSummary>();
+				agrupamentosPorData = new Map<string, Omit<VendasResponse, 'idVenda'>>();
 				agrupamentosPorProdutoEData.set(venda.produto, agrupamentosPorData);
 			}
 

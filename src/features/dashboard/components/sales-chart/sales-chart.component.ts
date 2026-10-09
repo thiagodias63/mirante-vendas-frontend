@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
-import { DashboardStateService, ProductSummary } from '../../state/dashboard-state.service';
+import { DashboardStateService } from '../../state/dashboard-state.service';
+import { VendasResponse } from 'src/shared/core/interfaces/vendas-response';
 
 @Component({
 	selector: 'app-sales-chart',
@@ -8,7 +9,7 @@ import { DashboardStateService, ProductSummary } from '../../state/dashboard-sta
 	styleUrls: ['./sales-chart.component.css'],
 })
 export class SalesChartComponent {
-	products: ProductSummary[] = [];
+	products: Omit<VendasResponse, 'idVenda'>[] = [];
 	chartData: ChartData<'bar', number[], string> = {
 		labels: [],
 		datasets: [{ label: 'Quantidade vendida', data: [], backgroundColor: '#3b82f6' }],
@@ -31,11 +32,13 @@ export class SalesChartComponent {
 			this.products = products;
 			this.chartData = {
 				labels: this.products.map((product) => `${product.produto} (${product.dataVenda})`),
-				datasets: [{
-					label: 'Quantidade vendida',
-					data: this.products.map((product) => product.quantidade),
-					backgroundColor: '#3b82f6',
-				}],
+				datasets: [
+					{
+						label: 'Quantidade vendida',
+						data: this.products.map((product) => product.quantidade),
+						backgroundColor: '#3b82f6',
+					},
+				],
 			};
 		});
 	}

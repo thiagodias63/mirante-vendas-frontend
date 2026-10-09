@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
-import { Venda, VendasService } from 'src/shared/api/vendas.service';
+import { VendasService } from 'src/shared/api/vendas.service';
 import { DashboardStateService } from '../../state/dashboard-state.service';
+import { VendasResponse } from 'src/shared/core/interfaces/vendas-response';
 
 interface ProductDetailsViewState {
-	sales: Venda[];
+	sales: Omit<VendasResponse, 'idVenda'>[];
 	loading: boolean;
 	errorMessage: string;
 }
@@ -38,13 +39,13 @@ export class ProductDetailsDialogComponent {
 		if (!visible) this.dashboardState.closeProductDetails();
 	}
 
-	private loadProductSales$(product: string): Observable<Venda[]> {
+	private loadProductSales$(product: string): Observable<Omit<VendasResponse, 'idVenda'>[]> {
 		const pageSize = 100;
 		return this.vendasService
 			.getAll({
 				size: pageSize,
 				page: 0,
-				orderBy: 'idVenda',
+				orderBy: 'dataVenda',
 				orderDirection: 'asc',
 				Produto: `*${product}*`,
 			})
