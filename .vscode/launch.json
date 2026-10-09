@@ -10,6 +10,27 @@
 			"url": "http://localhost:4200/"
 		},
 		{
+			"name": "Angular: Host",
+			"type": "chrome",
+			"request": "launch",
+			"url": "http://localhost:4200",
+			"runtimeExecutable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+			"userDataDir": "C:/Chrome dev session",
+			"disableNetworkCache": true,
+			"webRoot": "${workspaceFolder}",
+			"sourceMaps": true,
+			"sourceMapPathOverrides": {
+				"webpack:/*": "${webRoot}/*",
+				"/./*": "${webRoot}/*",
+				"/src/*": "${webRoot}/*",
+				"/*": "*",
+				"src/*": "${webRoot}/*",
+				"*": "*",
+				"./*": "${webRoot}/*"
+			},
+			"runtimeArgs": ["--disable-web-security"]
+		},
+		{
 			"name": "ng test",
 			"type": "chrome",
 			"request": "launch",

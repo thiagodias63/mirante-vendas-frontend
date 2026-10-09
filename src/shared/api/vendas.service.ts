@@ -54,7 +54,7 @@ export class VendasService {
 		let params = new HttpParams()
 			.set('_size', filters.size)
 			.set('_page', filters.page)
-			.set('_order', `${filters.orderBy},${filters.orderDirection}`);
+			.set('_order', `${filters.orderBy} ${filters.orderDirection}`);
 
 		if (filters.Produto) params = params.set('Produto', filters.Produto);
 		if (filters.Quantidade) params = params.set('Quantidade', filters.Quantidade);
