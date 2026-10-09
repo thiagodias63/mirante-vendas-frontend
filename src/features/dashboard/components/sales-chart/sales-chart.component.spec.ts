@@ -20,6 +20,9 @@ describe('SalesChartComponent', () => {
 			tableFirst: 0,
 			loading: false,
 			errorMessage: '',
+			chartProducts: [],
+			chartLoading: false,
+			chartErrorMessage: '',
 		});
 		await TestBed.configureTestingModule({
 			declarations: [SalesChartComponent],
@@ -31,24 +34,27 @@ describe('SalesChartComponent', () => {
 		component = fixture.componentInstance;
 	});
 
-	it('should uses product and day summaries from shared dashboard state', () => {
-		state.next({
-			...state.value,
-			products: [
-				{ produto: 'Camiseta', dataVenda: '2026-10-08', quantidade: 5, precoUnitario: 20 },
-				{ produto: 'Calça', dataVenda: '2026-10-09', quantidade: 1, precoUnitario: 50 },
-			],
-		});
-		expect(component.products).toEqual(state.value.products);
-		expect(component.chartData.labels).toEqual(['Camiseta (2026-10-08)', 'Calça (2026-10-09)']);
+	it('uses product-only summaries from the shared dashboard state', () => {
+		state.next({ ...state.value, chartProducts: [
+			{ produto: 'Camiseta', quantidade: 5 },
+			{ produto: 'Calça', quantidade: 1 },
+		] });
+
+		expect(component.products).toEqual(state.value.chartProducts);
+		expect(component.chartData.labels).toEqual(['Camiseta', 'Calça']);
 		expect(component.chartData.datasets[0].data).toEqual([5, 1]);
 	});
 
-	it('should renders the chart and empty state from shared state', () => {
-		state.next({ ...state.value, products: [{ produto: 'Camiseta', dataVenda: '2026-10-08', quantidade: 2, precoUnitario: 10 }] });
+	it('renders the chart, loading, and empty states from the shared state', () => {
+		state.next({ ...state.value, chartProducts: [{ produto: 'Camiseta', quantidade: 2 }] });
 		fixture.detectChanges();
 		expect(fixture.nativeElement.querySelector('p-chart')).toBeTruthy();
-		state.next({ ...state.value, products: [] });
+
+		state.next({ ...state.value, chartProducts: [], chartLoading: true });
+		fixture.detectChanges();
+		expect(fixture.nativeElement.textContent).toContain('Carregando dados do gráfico');
+
+		state.next({ ...state.value, chartProducts: [], chartLoading: false });
 		fixture.detectChanges();
 		expect(fixture.nativeElement.querySelector('.sales-chart__empty')).toBeTruthy();
 	});

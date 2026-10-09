@@ -10,6 +10,11 @@ export interface ProductSummary {
 	precoUnitario: number;
 }
 
+export interface ChartProductSummary {
+	produto: string;
+	quantidade: number;
+}
+
 export interface DashboardState {
 	sales: Venda[];
 	products: ProductSummary[];
@@ -19,6 +24,9 @@ export interface DashboardState {
 	tableFirst: number;
 	loading: boolean;
 	errorMessage: string;
+	chartProducts: ChartProductSummary[];
+	chartLoading: boolean;
+	chartErrorMessage: string;
 }
 
 @Injectable()
@@ -32,6 +40,7 @@ export class DashboardStateService {
 	private orderDirection: 'asc' | 'desc' = 'asc';
 	private productFilter = '';
 	private quantityFilter: number | null = null;
+	private chartFilterSignature: string | null = null;
 	private readonly stateSubject = new BehaviorSubject<DashboardState>({
 		sales: [],
 		products: [],
@@ -41,6 +50,9 @@ export class DashboardStateService {
 		tableFirst: 0,
 		loading: false,
 		errorMessage: '',
+		chartProducts: [],
+		chartLoading: false,
+		chartErrorMessage: '',
 	});
 	readonly state$ = this.stateSubject.asObservable();
 	private readonly selectedProductSubject = new BehaviorSubject<string | null>(null);
@@ -64,7 +76,10 @@ export class DashboardStateService {
 		const current = this.state;
 		let { size, page, tableFirst } = current;
 		if (event) {
-			if (event.filters) this.readFilters(event);
+			if (event.filters) {
+				this.readFilters(event);
+				this.loadChartSales();
+			}
 			tableFirst = event.first || 0;
 			size = event.rows || size;
 			page = Math.floor(tableFirst / size);
@@ -104,6 +119,40 @@ export class DashboardStateService {
 					loading: false,
 					errorMessage: 'Falha ao carregar vendas.',
 				}),
+		});
+	}
+
+	loadChartSales(): void {
+		const signature = `${this.productFilter.trim()}|${this.quantityFilter ?? ''}`;
+		if (signature === this.chartFilterSignature) return;
+		this.chartFilterSignature = signature;
+
+		const params: GetAllVendasParams = {
+			size: 500,
+			page: 0,
+			orderBy: 'produto',
+			orderDirection: 'asc',
+		};
+		const product = this.productFilter.trim();
+		if (product) params.Produto = `*${product}*`;
+		if (this.quantityFilter !== null) params.Quantidade = this.quantityFilter;
+
+		this.update({ ...this.state, chartLoading: true, chartErrorMessage: '' });
+		this.vendasService.getAll(params).subscribe({
+			next: (response) => this.update({
+				...this.state,
+				chartProducts: this.groupByProductName(response.data),
+				chartLoading: false,
+			}),
+			error: () => {
+				this.chartFilterSignature = null;
+				this.update({
+					...this.state,
+					chartProducts: [],
+					chartLoading: false,
+					chartErrorMessage: 'Falha ao carregar os dados do gráfico.',
+				});
+			},
 		});
 	}
 
@@ -157,5 +206,13 @@ export class DashboardStateService {
 			agrupamentosPorData.set(dataVenda, resumo);
 		}
 		return Array.from(agrupamentosPorProdutoEData.values()).flatMap((agrupamentosPorData) => Array.from(agrupamentosPorData.values()));
+	}
+
+	private groupByProductName(vendas: Venda[]): ChartProductSummary[] {
+		const quantidadesPorProduto = new Map<string, number>();
+		for (const venda of vendas) {
+			quantidadesPorProduto.set(venda.produto, (quantidadesPorProduto.get(venda.produto) || 0) + venda.quantidade);
+		}
+		return Array.from(quantidadesPorProduto, ([produto, quantidade]) => ({ produto, quantidade }));
 	}
 }

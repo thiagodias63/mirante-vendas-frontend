@@ -3,6 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { of } from 'rxjs';
 import { VendasService } from 'src/shared/api/vendas.service';
 import { DashboardStateService } from '../../state/dashboard-state.service';
 import { DashboardComponent } from './dashboard.component';
@@ -13,6 +14,7 @@ describe('DashboardComponent', () => {
 
 	beforeEach(async () => {
 		const vendas = jasmine.createSpyObj<VendasService>('VendasService', ['getAll']);
+		vendas.getAll.and.returnValue(of({ data: [], page: 0, size: 500, totalItems: 0 }));
 		await TestBed.configureTestingModule({
 			declarations: [DashboardComponent],
 			imports: [CommonModule, FormsModule, SelectButtonModule],

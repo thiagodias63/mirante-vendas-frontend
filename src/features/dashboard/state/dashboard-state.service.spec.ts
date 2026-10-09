@@ -35,6 +35,9 @@ describe('DashboardStateService', () => {
 			tableFirst: 0,
 			loading: false,
 			errorMessage: '',
+			chartProducts: [],
+			chartLoading: false,
+			chartErrorMessage: '',
 		});
 	});
 
@@ -67,6 +70,22 @@ describe('DashboardStateService', () => {
 			{ produto: 'Calça', dataVenda: '2026-10-08', quantidade: 1, precoUnitario: 50 },
 		]);
 		expect(stateService.state.loading).toBeFalse();
+	});
+
+	it('loads 500 records for the chart and aggregates quantities by product only', () => {
+		stateService.loadChartSales();
+
+		expect(vendasService.getAll).toHaveBeenCalledWith({
+			size: 500,
+			page: 0,
+			orderBy: 'produto',
+			orderDirection: 'asc',
+		});
+		expect(stateService.state.chartProducts).toEqual([
+			{ produto: 'Camisa', quantidade: 9 },
+			{ produto: 'CalÃ§a', quantidade: 1 },
+		]);
+		expect(stateService.state.chartLoading).toBeFalse();
 	});
 
 	it('should maps pagination, sorting, and filters to backend parameters', () => {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
-import { DashboardStateService, ProductSummary } from '../../state/dashboard-state.service';
+import { ChartProductSummary, DashboardStateService } from '../../state/dashboard-state.service';
 
 @Component({
 	selector: 'app-sales-chart',
@@ -8,7 +8,9 @@ import { DashboardStateService, ProductSummary } from '../../state/dashboard-sta
 	styleUrls: ['./sales-chart.component.css'],
 })
 export class SalesChartComponent {
-	products: ProductSummary[] = [];
+	products: ChartProductSummary[] = [];
+	loading = false;
+	errorMessage = '';
 	chartData: ChartData<'bar', number[], string> = {
 		labels: [],
 		datasets: [{ label: 'Quantidade vendida', data: [], backgroundColor: '#3b82f6' }],
@@ -17,7 +19,7 @@ export class SalesChartComponent {
 		responsive: true,
 		plugins: { legend: { display: false } },
 		scales: {
-			x: { title: { display: true, text: 'Produto' } },
+				x: { title: { display: true, text: 'Produto' } },
 			y: {
 				beginAtZero: true,
 				title: { display: true, text: 'Quantidade vendida' },
@@ -27,10 +29,12 @@ export class SalesChartComponent {
 	};
 
 	constructor(dashboardState: DashboardStateService) {
-		dashboardState.state$.subscribe(({ products }) => {
-			this.products = products;
+		dashboardState.state$.subscribe(({ chartProducts, chartLoading, chartErrorMessage }) => {
+			this.products = chartProducts;
+			this.loading = chartLoading;
+			this.errorMessage = chartErrorMessage;
 			this.chartData = {
-				labels: this.products.map((product) => `${product.produto} (${product.dataVenda})`),
+				labels: this.products.map((product) => product.produto),
 				datasets: [{
 					label: 'Quantidade vendida',
 					data: this.products.map((product) => product.quantidade),
